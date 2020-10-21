@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="​        js 反反复复看了很多遍，基础的部分从上课到看资料，希望后面可以用得上。对于一些基本概念不再写了，声明满变量，赋值，数据类型，基本的程序结构等等。 TDZ暂时性死区，看内容应该是在有let和const之后才有的概念，即不能先使用未声明的变量。 块作用域作用域这个概念在其他语言里面也有，在js中无论被什么关键字声明的全局作用域变量都可以在函数中进行访问。而在函数中声明的变量只能在函">
+<meta property="og:type" content="article">
+<meta property="og:title" content="js基础">
+<meta property="og:url" content="http://example.com/2020/03/24/js%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="CodePig">
+<meta property="og:description" content="​        js 反反复复看了很多遍，基础的部分从上课到看资料，希望后面可以用得上。对于一些基本概念不再写了，声明满变量，赋值，数据类型，基本的程序结构等等。 TDZ暂时性死区，看内容应该是在有let和const之后才有的概念，即不能先使用未声明的变量。 块作用域作用域这个概念在其他语言里面也有，在js中无论被什么关键字声明的全局作用域变量都可以在函数中进行访问。而在函数中声明的变量只能在函">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200403143330.png">
+<meta property="og:image" content="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200403145813.png">
+<meta property="og:image" content="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200403152135.png">
+<meta property="og:image" content="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200403152303.png">
+<meta property="og:image" content="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200403154804.png">
+<meta property="og:image" content="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200403160422.png">
+<meta property="og:image" content="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200403161659.png">
+<meta property="og:image" content="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200403164312.png">
+<meta property="og:image" content="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200403164322.png">
+<meta property="og:image" content="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200427220649.png">
+<meta property="og:image" content="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200427212255.png">
+<meta property="article:published_time" content="2020-03-24T09:14:56.000Z">
+<meta property="article:modified_time" content="2020-04-29T03:49:27.758Z">
+<meta property="article:author" content="GuAn">
+<meta property="article:tag" content="JavaScript 语法 复习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200403143330.png">
+
+<link rel="canonical" href="http://example.com/2020/03/24/js%E5%9F%BA%E7%A1%80/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>js基础 | CodePig</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">CodePig</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/03/24/js%E5%9F%BA%E7%A1%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="GuAn">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CodePig">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          js基础
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-03-24 17:14:56" itemprop="dateCreated datePublished" datetime="2020-03-24T17:14:56+08:00">2020-03-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-29 11:49:27" itemprop="dateModified" datetime="2020-04-29T11:49:27+08:00">2020-04-29</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>​        js 反反复复看了很多遍，基础的部分从上课到看资料，希望后面可以用得上。对于一些基本概念不再写了，声明满变量，赋值，数据类型，基本的程序结构等等。</p>
+<h2 id="TDZ"><a href="#TDZ" class="headerlink" title="TDZ"></a>TDZ</h2><p>暂时性死区，看内容应该是在有let和const之后才有的概念，即不能先使用未声明的变量。</p>
+<h2 id="块作用域"><a href="#块作用域" class="headerlink" title="块作用域"></a>块作用域</h2><p>作用域这个概念在其他语言里面也有，在js中无论被什么关键字声明的全局作用域变量都可以在函数中进行访问。而在函数中声明的变量只能在函数中或函数的子函数中使用，如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">hd</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> web = <span class="string">&quot;web&quot;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">show</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(web);</span><br><span class="line">  &#125;</span><br><span class="line">  show(); <span class="comment">//子函数结果: web</span></span><br><span class="line">  <span class="built_in">console</span>.log(web); <span class="comment">//函数结果: web</span></span><br><span class="line">&#125;</span><br><span class="line">hd();<span class="comment">// 可以访问</span></span><br><span class="line"><span class="built_in">console</span>.log(web); <span class="comment">//全局访问: hd is not defined</span></span><br></pre></td></tr></table></figure>
+
+<p>那么如果函数内部和外部同时声明了同名变量，在函数内访问时就会使用函数中声明的变量，而函数外访问使用的是函数外声明的变量。两个不会互相访问。使用var声明的变量很容易造成变量的污染。</p>
+<p>上述说了很多可以粗略的理解为尽量使用let定义变量。</p>
+<p>在使用模板获取值的时候要注意使用的符号是1旁边的点``而不是引号。</p>
+<h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><p>数组的方法有很多，因为是弱类型的关系可以在一个数组里面存放多个类型的值。在查看数组中的元素的时候可以使用console.table()打印的方式可以看到打印出的数组是一个表格的形式,这样看起来十分方便。</p>
+<p><img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200403143330.png"></p>
+<p>es6里有一个展开语法开起来很方便。可以看出使用和不使用时候的区别，对于对象也是同样的道理。</p>
+<p><img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200403145813.png"></p>
+<p><em>解构赋值与展开语法一起使用时，注意展开和吸收的灵活使用</em></p>
+<p><img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200403152135.png"></p>
+<p>而当单独使用解构赋值的时候，显然左右赋值的类型或者说格式应该是一致的</p>
+<p><img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200403152303.png"></p>
+<h3 id="数组函数"><a href="#数组函数" class="headerlink" title="数组函数"></a>数组函数</h3><ul>
+<li>push pop shift unshift 就部说了，这里有一个silce和splice方法。可以看出两种方法的区别，分别是返回一个截取的数组而原数组不受影响以及直接改变了原数组返回的是被截取的数组。</li>
+</ul>
+<p><img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200403154804.png"></p>
+<ul>
+<li>当然splice方法还可以实现添加功能，在参数不同的情况下分别可以实现在原数组上添加或者删除某一个元素重新添加新的元素。其实只需要看这个函数的参数注释就知道对应的含义了。</li>
+</ul>
+<p>![image-20200403154838576](/Users/shawnyue/Library/Application Support/typora-user-images/image-20200403154838576.png)</p>
+<p><img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200403160422.png"></p>
+<p>使用splice函数实现一个元素移动的方法</p>
+<p><img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200403161659.png"></p>
+<ul>
+<li>查找元素是可以使用IndexOf/lastIndexOf方法获取元素的下标也可以使用find方法。find方法接受的是一个函数，函数可以为你在遍历这个数组时如果找到对应的元素而执行相对应的操作。</li>
+</ul>
+<p><img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200403164312.png"></p>
+<p><img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200403164322.png"></p>
+<p>数组中的some和every方法，即在遍历数组中的每一个元素的时候，some表示如果在回调函数中判断时有一个元素满足条件则整个表达式的值为真而every要求每一个元素为真整个表达式的值才为真</p>
+<p>函数在使用function进行定义的时候会获得一个高优先级，即使在声明前对函数进行调用也可以进行调用，而当函数使用变量赋值的方式进行声明时提前调用则会提示没有实例化，这被称作函数的提升。</p>
+<p>在没有了解模块化之前，如果引入的多个js文件中有重名的方法会导致方法的覆盖，这时候需要进行的调整方法有1.将js文件中的方法都封装在一个立即函数中，再把这个函数中的内容交给window对象中的一个属性，通过不同的属性接受可以实现调用不同的方法</p>
+<p><img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200427220649.png"></p>
+<p>或者可以利用let块级作用域的特点在一个大括号内使用let定义一个函数变量，然后同样的将函数变量赋给window中的一个属性达到调用的目的。</p>
+<h2 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h2><p>全局作用域只有一个，每个函数又都有作用域（环境）。这也是为什么在</p>
+<p><img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200427212255.png"></p>
+<p>show函数中访问的this是Lesson对象，而在map函数中this又变成了window。</p>
+<h3 id="作用域的访问关系"><a href="#作用域的访问关系" class="headerlink" title="作用域的访问关系"></a>作用域的访问关系</h3><p>在内部作用域中可以访问到外部作用域的变量，在外部作用域中无法访问到内部作用域的变量。</p>
+<h3 id="变量的提升-声明提前"><a href="#变量的提升-声明提前" class="headerlink" title="变量的提升(声明提前)"></a>变量的提升(声明提前)</h3><p>使用var关键字声明的变量（ 比如 <code>var a = 1</code>），<strong>会在所有的代码执行之前被声明</strong>（但是不会赋值），但是如果声明变量时不是用var关键字（比如直接写<code>a = 1</code>），则变量不会被声明提前。如果先使用还会报引用错误</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(a); <span class="comment">// undefined</span></span><br><span class="line"><span class="keyword">var</span> a = <span class="number">123</span>;</span><br></pre></td></tr></table></figure>
+
+<p>为什么会有变量提升呢，在js运行时会有一个预编译的过程。</p>
+<p><strong>规律1：任何变量，如果未经声明就赋值，此变量是属于 window 的属性</strong>，而且不会做变量提升。（注意，无论在哪个作用域内赋值）</p>
+<p><strong>规律2：一切声明的全局变量，全是window的属性</strong>。（注意，我说的是在全局作用域内声明的全局变量，不是说局部变量）</p>
+<p>未被声明的变量属于window但不会被提升，声明的全局变量属于window会被提升。</p>
+<h2 id="this"><a href="#this" class="headerlink" title="this"></a>this</h2><p>函数中的this指的是window对象</p>
+<p>对象方法中的this指的是当前对象的引用</p>
+<h2 id="页面构建"><a href="#页面构建" class="headerlink" title="页面构建"></a>页面构建</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">addMessage</span>(<span class="params">element,message</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> messageElement = <span class="built_in">document</span>.createElement(<span class="string">&quot;li&quot;</span>);</span><br><span class="line">  messageElement.textContent = messgae;</span><br><span class="line">  element.appendChild(messageElement);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> first = <span class="built_in">document</span>.getElementById(<span class="string">&quot;first&quot;</span>);</span><br><span class="line">addMessage(first,<span class="string">&quot;hello&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+
+
+<p>通过上述方式可以为元素添加一个子元素，主要需要注意的是这样的一个操作流程。如果需要使用这个函数则，需要为这个函数传入一个元素，方式是通过内置的getElementById的方式，获取到id之后就可以作为参数传递给这个方法使用。创建后续节点并把它添加到dom树上。</p>
+<p>文本对象模型DOM元素 </p>
+<blockquote>
+<p>页面构建的两个步骤 html解析与DOM构建  js脚本的执行</p>
+</blockquote>
+<p>在页面没有被整个解析完之前上述两个步骤将会交替执行。</p>
+<p>这个DOM是不是就表示页面中的每一个元素呢？就是每一个标签。对于这些节点的形式就像是数据结构中的树 出了元素html之外其他每一个标签都有一个父节点和任意多个子节点。DOM元素从html中解析而来，两者类似但并不相同，当解析到js时，回停止构建DOM并开始执行js代码。另外当页面中的元素位置发生错误时，浏览器会自动修正错误的代码。js代码是由js引擎执行的</p>
+<p>js可以在任意程度上修改DOM结构，可以添加或删除元素。但由于他不能操作还没有被创建的元素 所以如果想在也没使用js代码通常会把它放在页面的底端。如果有多个js片段，他们之间的变量是可以共享的，这是因为全局Window对象存在于整个生命周期并且存储着所有js变量。</p>
+<p>当页面构建完成之后就会进入事件处理环节。</p>
+<h2 id="事件处理"><a href="#事件处理" class="headerlink" title="事件处理"></a>事件处理</h2><p>所有已生成的时间，无论是用户的点击还是键盘按压或者是服务器端的ajax事件都会被放在一个事件队列中。以他们被浏览器检测到的顺序进行排列。浏览器回循环检查时间的队列头如果有事件则会进行处理。</p>
+<p>事件处理器是指当某个事件发生之后，我们希望执行的函数。想要达到这个目标，最关键的是知道什么样的事件发生了。也就是需要为这个事件注册一个处理器。</p>
+<blockquote>
+<p>1.通过把函数赋给某一个属性 windown.load = function(){}</p>
+<p>2.通过使用内置的addEventListener方法</p>
+</blockquote>
+<p>document.body.onclick = function(){} 代表的含义是为dom元素中的body元素的点击事件注册一个处理器。这样做虽然十分方便但是可能会不小心将上面注册的处理器给覆盖掉，因为这种方式只能为一个事件注册一个处理器。但如果使用第二种方式就不会有这样的情况发生。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">document</span>.body.addEventLisenter(<span class="string">&quot;click&quot;</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> second = <span class="built_in">document</span>.getElementById(<span class="string">&quot;second&quot;</span>);</span><br><span class="line">  addMessage(<span class="string">&quot;second&quot;</span>,<span class="string">&quot;click&quot;</span>);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+
+
+<p>通过这样的方式可以指明是为元素中的什么事件注册处理器，如这里给的click事件。</p>
+<p>就目前来看的话，掌握元素的属性和方法也就是api好像是最为重要的。</p>
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><blockquote>
+<p>JavaScript中最重要的概念是函数。函数也可以被视为其他任意类型的javascript对象，它可以被引用，以字面量形式声明({})，作为函数参数进行传递</p>
+</blockquote>
+<p>对象所具有的操作函数都可以，并且函数还可以被调用。</p>
+<h3 id="回调函数"><a href="#回调函数" class="headerlink" title="回调函数"></a>回调函数</h3><p>建立了一个将在随后调用的函数。建立的函数会被其他函数在某个稍后的合适的时间点再来调用。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/JavaScript-%E8%AF%AD%E6%B3%95-%E5%A4%8D%E4%B9%A0/" rel="tag"># JavaScript 语法 复习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/02/05/jquery%E5%9F%BA%E7%A1%80/" rel="prev" title="jquery基础">
+      <i class="fa fa-chevron-left"></i> jquery基础
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/08/24/redis%E5%88%9D%E6%8E%A2/" rel="next" title="redis初探">
+      redis初探 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#TDZ"><span class="nav-number">1.</span> <span class="nav-text">TDZ</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9D%97%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="nav-number">2.</span> <span class="nav-text">块作用域</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E7%BB%84"><span class="nav-number">3.</span> <span class="nav-text">数组</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E5%87%BD%E6%95%B0"><span class="nav-number">3.1.</span> <span class="nav-text">数组函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="nav-number">4.</span> <span class="nav-text">作用域</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8%E5%9F%9F%E7%9A%84%E8%AE%BF%E9%97%AE%E5%85%B3%E7%B3%BB"><span class="nav-number">4.1.</span> <span class="nav-text">作用域的访问关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%98%E9%87%8F%E7%9A%84%E6%8F%90%E5%8D%87-%E5%A3%B0%E6%98%8E%E6%8F%90%E5%89%8D"><span class="nav-number">4.2.</span> <span class="nav-text">变量的提升(声明提前)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#this"><span class="nav-number">5.</span> <span class="nav-text">this</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B5%E9%9D%A2%E6%9E%84%E5%BB%BA"><span class="nav-number">6.</span> <span class="nav-text">页面构建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86"><span class="nav-number">7.</span> <span class="nav-text">事件处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E6%95%B0"><span class="nav-number">8.</span> <span class="nav-text">函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0"><span class="nav-number">8.1.</span> <span class="nav-text">回调函数</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">GuAn</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/NjshawnYue1" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;NjshawnYue1" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">GuAn</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v5.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.7.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

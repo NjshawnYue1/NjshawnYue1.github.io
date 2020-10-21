@@ -154,7 +154,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/21/hello/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/17/spring-security%E5%9F%BA%E7%A1%80/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -168,7 +168,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/10/21/hello/" class="post-title-link" itemprop="url">hello</a>
+            <a href="/2020/10/17/spring-security%E5%9F%BA%E7%A1%80/" class="post-title-link" itemprop="url">spring security基础</a>
         </h1>
 
         <div class="post-meta">
@@ -178,7 +178,155 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-10-21 16:20:19" itemprop="dateCreated datePublished" datetime="2020-10-21T16:20:19+08:00">2020-10-21</time>
+              <time title="创建时间：2020-10-17 14:36:29" itemprop="dateCreated datePublished" datetime="2020-10-17T14:36:29+08:00">2020-10-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-10-20 20:00:37" itemprop="dateModified" datetime="2020-10-20T20:00:37+08:00">2020-10-20</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Spring-Security"><a href="#Spring-Security" class="headerlink" title="Spring-Security"></a>Spring-Security</h1><h2 id="简单使用"><a href="#简单使用" class="headerlink" title="简单使用"></a>简单使用</h2><p>在一个最简单的web的springboot的应用中，用户可以根据url直接获取到结果，如直接访问<code><a target="_blank" rel="noopener" href="http://localhost:8080/hello">http://localhost:8080/hello</a></code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AppController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestMapping(&quot;/hello&quot;)</span></span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="function">String <span class="title">home</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Hello ,spring security!&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+
+<p>但当我们引入spring-security依赖时，会对这个请求做一个保护，在什么都不需要配置的情况下，用户将不能直接对这个url进行访问而需要认证以及授权。这个依赖的自动配置文件默认为我们提供了一个登陆用户名为user密码为随机生成的一个账号。在springboot 2.x版本中，会直接跳转至一个登陆页面，这个页面由依赖提供。</p>
+<blockquote>
+<p>集成相关依赖后，进行简单的配置不需要编写任何配置文件就可以使用。</p>
+</blockquote>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="comment"># Spring Security 配置项，对应 SecurityProperties 配置类</span></span><br><span class="line">  <span class="attr">security:</span></span><br><span class="line">    <span class="comment"># 配置默认的 InMemoryUserDetailsManager 内存级别 的用户账号与密码。</span></span><br><span class="line">    <span class="attr">user:</span></span><br><span class="line">      <span class="attr">name:</span> <span class="string">user</span> <span class="comment"># 账号</span></span><br><span class="line">      <span class="attr">password:</span> <span class="string">user</span> <span class="comment"># 密码</span></span><br><span class="line">      <span class="attr">roles:</span> <span class="string">ADMIN</span> <span class="comment"># 拥有角色</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="自定义配置"><a href="#自定义配置" class="headerlink" title="自定义配置"></a>自定义配置</h3><p>继承抽象类之后就可以实现自定义在web场景下的配置，注意方法重载中的参数</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// SecurityConfig.java</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SecurityConfig</span> <span class="keyword">extends</span> <span class="title">WebSecurityConfigurerAdapter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>具体重写的方法为</p>
+<ol>
+<li>认证管理</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(AuthenticationManagerBuilder auth)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    auth.</span><br><span class="line">            <span class="comment">// &lt;X&gt; 使用内存中的 InMemoryUserDetailsManager</span></span><br><span class="line">            inMemoryAuthentication()</span><br><span class="line">            <span class="comment">// &lt;Y&gt; 不使用 PasswordEncoder 密码编码器</span></span><br><span class="line">            .passwordEncoder(NoOpPasswordEncoder.getInstance())</span><br><span class="line">            <span class="comment">// &lt;Z&gt; 配置 admin 用户  可以给一个用户配置多个角色</span></span><br><span class="line">            .withUser(<span class="string">&quot;admin&quot;</span>).password(<span class="string">&quot;admin&quot;</span>).roles(<span class="string">&quot;ADMIN&quot;</span>)</span><br><span class="line">            <span class="comment">// &lt;Z&gt; 配置 normal 用户</span></span><br><span class="line">            .and().withUser(<span class="string">&quot;normal&quot;</span>).password(<span class="string">&quot;normal&quot;</span>).roles(<span class="string">&quot;NORMAL&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>用户添加完成后需要对进行访问的url进行配置。</p>
+<ol start="2">
+<li>http管理</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    http</span><br><span class="line">            <span class="comment">// &lt;X&gt; 配置请求地址的权限 看方法名 认证的请求的列表</span></span><br><span class="line">            .authorizeRequests()</span><br><span class="line">      			<span class="comment">// 根据controller中的mapping进行配置</span></span><br><span class="line">                .antMatchers(<span class="string">&quot;/test/echo&quot;</span>).permitAll() <span class="comment">// 所有用户可访问</span></span><br><span class="line">      			<span class="comment">// 对角色的两种配置方式</span></span><br><span class="line">                .antMatchers(<span class="string">&quot;/test/admin&quot;</span>).hasRole(<span class="string">&quot;ADMIN&quot;</span>) <span class="comment">// 需要 ADMIN 角色</span></span><br><span class="line">                .antMatchers(<span class="string">&quot;/test/normal&quot;</span>).access(<span class="string">&quot;hasRole(&#x27;ROLE_NORMAL&#x27;)&quot;</span>) <span class="comment">// 需要 NORMAL 角色。</span></span><br><span class="line">                <span class="comment">// 任何请求，访问的用户都需要经过认证</span></span><br><span class="line">                .anyRequest().authenticated()</span><br><span class="line">            .and()</span><br><span class="line">            <span class="comment">// &lt;Y&gt; 设置 Form 表单登录</span></span><br><span class="line">            .formLogin()</span><br><span class="line"><span class="comment">//                    .loginPage(&quot;/login&quot;) // 登录 URL 地址</span></span><br><span class="line">                .permitAll() <span class="comment">// 所有用户可访问</span></span><br><span class="line">            .and()</span><br><span class="line">            <span class="comment">// 配置退出相关</span></span><br><span class="line">            .logout()</span><br><span class="line"><span class="comment">//                    .logoutUrl(&quot;/logout&quot;) // 退出 URL 地址</span></span><br><span class="line">                .permitAll(); <span class="comment">// 所有用户可访问</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在访问不同的url时会依据配置需要不同的用户和角色</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/test&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(&quot;/echo&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">demo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;示例返回&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(&quot;/home&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">home</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;我是首页&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(&quot;/admin&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">admin</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;我是管理员&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(&quot;/normal&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">normal</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;我是普通用户&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="spring-security核心组件"><a href="#spring-security核心组件" class="headerlink" title="spring-security核心组件"></a>spring-security核心组件</h2><h3 id="SecurityContext"><a href="#SecurityContext" class="headerlink" title="SecurityContext"></a>SecurityContext</h3><p>用户通过安全验证后，相关的验证信息会存储在这个对象中，通过此方法可以拿到认证对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Authentication <span class="title">getAuthentication</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="SecurityContextHolder"><a href="#SecurityContextHolder" class="headerlink" title="SecurityContextHolder"></a>SecurityContextHolder</h3><p>在典型的web应用程序中，用户登录一次，然后由其会话ID标识。服务器缓存持续时间会话的主体信息。在Spring Security中，在请求之间存储<code>SecurityContext</code>的责任落在<code>SecurityContextPersistenceFilter</code>上，默认情况下，该上下文将上下文存储为HTTP请求之间的<code>HttpSession</code>属性。它会为每个请求恢复上下文<code>SecurityContextHolder</code>，并且最重要的是，在请求完成时清除<code>SecurityContextHolder</code>。SecurityContextHolder是一个类，他的功能方法都是静态的（static）。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//  SecurityContextHolder.getContext().setAuthentication(token);</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Authentication"><a href="#Authentication" class="headerlink" title="Authentication"></a>Authentication</h3><p>authentication 直译过来是“认证”的意思，在Spring Security 中Authentication用来表示<strong>当前用户</strong>是谁，一般来讲你可以理解为authentication就是一组<strong>用户名密码信息</strong>。Authentication也是一个接口，其定义如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Copypublic <span class="class"><span class="keyword">interface</span> <span class="title">Authentication</span> <span class="keyword">extends</span> <span class="title">Principal</span>, <span class="title">Serializable</span> </span>&#123;</span><br><span class="line"> </span><br><span class="line">	Collection&lt;? extends GrantedAuthority&gt; getAuthorities();</span><br><span class="line">	<span class="function">Object <span class="title">getCredentials</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="function">Object <span class="title">getDetails</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="function">Object <span class="title">getPrincipal</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">boolean</span> <span class="title">isAuthenticated</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">setAuthenticated</span><span class="params">(<span class="keyword">boolean</span> isAuthenticated)</span> <span class="keyword">throws</span> IllegalArgumentException</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接口有4个get方法，分别获取</p>
+<ul>
+<li><code>Authorities</code>, 填充的是用户<strong>角色</strong>信息。</li>
+<li><code>Credentials</code>，直译，证书。填充的是<strong>密码</strong>。</li>
+<li><code>Details</code> ，用户信息。</li>
+<li>,<code>Principal</code> 直译，形容词是“主要的，最重要的”，名词是“负责人，资本，本金”。感觉很别扭，所以，还是不翻译了，直接用原词principal来表示这个概念，其填充的是<strong>用户名</strong>。</li>
+</ul>
+<p>因此可以推断其实现类有这4个属性。这几个方法作用如下：</p>
+<ul>
+<li><code>getAuthorities</code>: 获取用户权限，一般情况下获取到的是用户的角色信息。</li>
+<li><code>getCredentials</code>: 获取证明用户认证的信息，通常情况下获取到的是密码等信息。</li>
+<li><code>getDetails</code>: 获取用户的额外信息，（这部分信息可以是我们的用户表中的信息）</li>
+<li><code>getPrincipal</code>: 获取用户身份信息，在未认证的情况下获取到的是用户名，在已认证的情况下获取到的是 UserDetails (UserDetails也是一个接口，里边的方法有getUsername,getPassword等)。</li>
+<li><code>isAuthenticated</code>: 获取当前 Authentication 是否已认证。</li>
+<li><code>setAuthenticated</code>: 设置当前 Authentication 是否已认证（true or false）。</li>
+</ul>
+<h3 id="UserDetails"><a href="#UserDetails" class="headerlink" title="UserDetails"></a>UserDetails</h3><p>UserDetails，看命知义，是用户信息的意思。其存储的就是用户信息，其定义如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Copypublic <span class="class"><span class="keyword">interface</span> <span class="title">UserDetails</span> <span class="keyword">extends</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	Collection&lt;? extends GrantedAuthority&gt; getAuthorities();</span><br><span class="line">	<span class="function">String <span class="title">getPassword</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="function">String <span class="title">getUsername</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">boolean</span> <span class="title">isAccountNonExpired</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">boolean</span> <span class="title">isAccountNonLocked</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">boolean</span> <span class="title">isCredentialsNonExpired</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">boolean</span> <span class="title">isEnabled</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>方法含义如下：</p>
+<ul>
+<li><code>getAuthorites</code>：获取用户权限，本质上是用户的<strong>角色信息</strong>。</li>
+<li><code>getPassword</code>: 获取密码。</li>
+<li><code>getUserName</code>: 获取用户名。</li>
+<li><code>isAccountNonExpired</code>: 账户是否过期。</li>
+<li><code>isAccountNonLocked</code>: 账户是否被锁定。</li>
+<li><code>isCredentialsNonExpired</code>: 密码是否过期。</li>
+<li><code>isEnabled</code>: 账户是否可用。</li>
+</ul>
+<h3 id="UserDetailsService"><a href="#UserDetailsService" class="headerlink" title="UserDetailsService"></a>UserDetailsService</h3><p>提到了<code>UserDetails</code>就必须得提到<code>UserDetailsService</code>, UserDetailsService也是一个接口，且只有一个方法<code>loadUserByUsername</code>，他可以用来获取UserDetails。</p>
+<p>通常在spring security应用中，我们会自定义一个CustomUserDetailsService来实现UserDetailsService接口，并实现其<code>public UserDetails loadUserByUsername(final String login);</code>方法。我们在实现<code>loadUserByUsername</code>方法的时候，就可以通过查询数据库（或者是缓存、或者是其他的存储形式）来获取用户信息，然后组装成一个<code>UserDetails</code>,(通常是一个<code>org.springframework.security.core.userdetails.User</code>，它继承自UserDetails) 并返回。</p>
+<p>在实现<code>loadUserByUsername</code>方法的时候，如果我们通过查库没有查到相关记录，需要抛出一个异常来告诉spring security来“善后”。这个异常是<code>org.springframework.security.core.userdetails.UsernameNotFoundException</code>。</p>
+<h3 id="AuthenticationManager"><a href="#AuthenticationManager" class="headerlink" title="AuthenticationManager"></a>AuthenticationManager</h3><p>AuthenticationManager 是一个接口，它只有一个方法，接收参数为<code>Authentication</code>，其定义如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Copypublic <span class="class"><span class="keyword">interface</span> <span class="title">AuthenticationManager</span> </span>&#123;</span><br><span class="line">    <span class="function">Authentication <span class="title">authenticate</span><span class="params">(Authentication authentication)</span></span></span><br><span class="line"><span class="function">			<span class="keyword">throws</span> AuthenticationException</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>AuthenticationManager 的作用就是校验<code>Authentication</code>,如果验证失败会抛出<code>AuthenticationException</code>异常。<code>AuthenticationException</code>是一个抽象类，因此代码逻辑并不能实例化一个AuthenticationException异常并抛出，实际上抛出的异常通常是其实现类，如<code>DisabledException</code>,<code>LockedException</code>,<code>BadCredentialsException</code>等。<code>BadCredentialsException</code>可能会比较常见，即密码错误的时候。</p>
+<p>结合数据库的步骤，除了基础的引入依赖之外，一般包含的表为 用户表 角色表 用户角色关联表</p>
+<p>需要定义一个service实现UserDetailsService接口 在这个类中只需要利用自己的mapper去实现接口中的方法loadUserByUsername即可 </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component(&quot;customUserDetailsService&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomUserDetailsService</span> <span class="keyword">implements</span> <span class="title">UserDetailsService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	UserRepository userRepository;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> UserDetails <span class="title">loadUserByUsername</span><span class="params">(String login)</span> <span class="keyword">throws</span> UsernameNotFoundException </span>&#123;</span><br><span class="line">         <span class="comment">// 1. 查询用户 参数实际上是用户名</span></span><br><span class="line">		User userFromDatabase = userRepository.findOneByLogin(login);</span><br><span class="line">		<span class="keyword">if</span> (userFromDatabase == <span class="keyword">null</span>) &#123;</span><br><span class="line">			<span class="comment">//log.warn(&quot;User: &#123;&#125; not found&quot;, login);</span></span><br><span class="line">		 <span class="keyword">throw</span> <span class="keyword">new</span> UsernameNotFoundException(<span class="string">&quot;User &quot;</span> + login + <span class="string">&quot; was not found in db&quot;</span>);</span><br><span class="line">            <span class="comment">//这里找不到必须抛异常</span></span><br><span class="line">		&#125;</span><br><span class="line">	    <span class="comment">// 2. 设置角色 </span></span><br><span class="line">      <span class="comment">// Collection&lt;? extends GrantedAuthority&gt; getAuthorities(); 是userDetails中的属性 用来存放角色</span></span><br><span class="line">		Collection&lt;GrantedAuthority&gt; grantedAuthorities = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">      <span class="comment">// GrantedAuthority创建此对象并将刚刚查询出的结果中的角色信息放进去</span></span><br><span class="line">		GrantedAuthority grantedAuthority = <span class="keyword">new</span> SimpleGrantedAuthority(userFromDatabase.getRole());</span><br><span class="line">		grantedAuthorities.add(grantedAuthority);</span><br><span class="line">      <span class="comment">// 返回用户名密码和角色</span></span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> User(login,userFromDatabase.getPassword(), grantedAuthorities);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>回到配置类中，对认证配置方法做修改</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(AuthenticationManagerBuilder auth)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">   <span class="comment">// 使用上面创建的userDetailsService 使用了这个密码器之后进行校验时会进行计算匹配</span></span><br><span class="line">	auth.userDetailsService(customUserDetailsService)</span><br><span class="line">			.passwordEncoder(passwordEncoder());</span><br><span class="line">	<span class="comment">/*auth</span></span><br><span class="line"><span class="comment">		.inMemoryAuthentication()</span></span><br><span class="line"><span class="comment">		.withUser(&quot;admin1&quot;)</span></span><br><span class="line"><span class="comment">			.password(&quot;admin1&quot;)</span></span><br><span class="line"><span class="comment">			.roles(&quot;ADMIN&quot;, &quot;USER&quot;)</span></span><br><span class="line"><span class="comment">			.and()</span></span><br><span class="line"><span class="comment">		.withUser(&quot;user1&quot;).password(&quot;user1&quot;)</span></span><br><span class="line"><span class="comment">			.roles(&quot;USER&quot;);*/</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> PasswordEncoder <span class="title">passwordEncoder</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">new</span> BCryptPasswordEncoder();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/21/SpringCloud%E5%9F%BA%E7%A1%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="GuAn">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CodePig">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/09/21/SpringCloud%E5%9F%BA%E7%A1%80/" class="post-title-link" itemprop="url">SpringCloud基础</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-09-21 20:55:27 / 修改时间：20:55:53" itemprop="dateCreated datePublished" datetime="2020-09-21T20:55:27+08:00">2020-09-21</time>
             </span>
 
           
@@ -207,9 +355,783 @@
   
   
 
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/19/springboot%E5%85%A5%E9%97%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="GuAn">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CodePig">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/09/19/springboot%E5%85%A5%E9%97%A8/" class="post-title-link" itemprop="url">springboot入门</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-09-19 15:30:03 / 修改时间：15:35:03" itemprop="dateCreated datePublished" datetime="2020-09-19T15:30:03+08:00">2020-09-19</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="SpringBoot基础"><a href="#SpringBoot基础" class="headerlink" title="SpringBoot基础"></a>SpringBoot基础</h2><h3 id="1-简介"><a href="#1-简介" class="headerlink" title="1.简介"></a>1.简介</h3><blockquote>
+<p>简化spring开发的框架</p>
+<p>对整个spring技术栈的整合</p>
+<p>是j2ee的一站式解决方案</p>
+</blockquote>
+<h3 id="2-微服务"><a href="#2-微服务" class="headerlink" title="2.微服务"></a>2.微服务</h3><blockquote>
+<p>一个应用应该是一组小型服务,他们之间可以通过http的方式进行沟通,</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/09/19/springboot%E5%85%A5%E9%97%A8/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/08/24/redis%E5%88%9D%E6%8E%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="GuAn">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CodePig">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/24/redis%E5%88%9D%E6%8E%A2/" class="post-title-link" itemprop="url">redis初探</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-08-24 22:35:25" itemprop="dateCreated datePublished" datetime="2020-08-24T22:35:25+08:00">2020-08-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-19 19:14:35" itemprop="dateModified" datetime="2020-09-19T19:14:35+08:00">2020-09-19</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>文中所写time value key通常对应为命令的参数</p>
+</blockquote>
+<p>##Redis</p>
+<blockquote>
+<p>redis是单线程的 基于内存操作的 cpu不是性能瓶颈,是单线程操作的，不需要切换cpu上下文</p>
+</blockquote>
+<h3 id="一些基础命令"><a href="#一些基础命令" class="headerlink" title="一些基础命令"></a>一些基础命令</h3><ul>
+<li><p>keys * 查询当前数据库中的所有键 </p>
+</li>
+<li><p>dbsize 查询当前库的大小 有几个键就会返回几</p>
+</li>
+<li><p>flushdb flushall 清空当前数据库，清空所有数据</p>
+</li>
+<li><p>select db  切换数据库</p>
+</li>
+<li><p>set key value 设置值</p>
+</li>
+<li><p>get key 获取值</p>
+</li>
+<li><p>exists key 是否存在这个键 返回1或0</p>
+</li>
+<li><p><em>expire key 10(s)</em> 设置过期时间</p>
+</li>
+<li><p>ttl key 查看当前键的剩余时间 </p>
+</li>
+<li><p>type key 查看当前键的类型</p>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/08/24/redis%E5%88%9D%E6%8E%A2/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/03/24/js%E5%9F%BA%E7%A1%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="GuAn">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CodePig">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/03/24/js%E5%9F%BA%E7%A1%80/" class="post-title-link" itemprop="url">js基础</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-03-24 17:14:56" itemprop="dateCreated datePublished" datetime="2020-03-24T17:14:56+08:00">2020-03-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-29 11:49:27" itemprop="dateModified" datetime="2020-04-29T11:49:27+08:00">2020-04-29</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>​        js 反反复复看了很多遍，基础的部分从上课到看资料，希望后面可以用得上。对于一些基本概念不再写了，声明满变量，赋值，数据类型，基本的程序结构等等。</p>
+<h2 id="TDZ"><a href="#TDZ" class="headerlink" title="TDZ"></a>TDZ</h2><p>暂时性死区，看内容应该是在有let和const之后才有的概念，即不能先使用未声明的变量。</p>
+<h2 id="块作用域"><a href="#块作用域" class="headerlink" title="块作用域"></a>块作用域</h2><p>作用域这个概念在其他语言里面也有，在js中无论被什么关键字声明的全局作用域变量都可以在函数中进行访问。而在函数中声明的变量只能在函数中或函数的子函数中使用，如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">hd</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> web = <span class="string">&quot;web&quot;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">show</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(web);</span><br><span class="line">  &#125;</span><br><span class="line">  show(); <span class="comment">//子函数结果: web</span></span><br><span class="line">  <span class="built_in">console</span>.log(web); <span class="comment">//函数结果: web</span></span><br><span class="line">&#125;</span><br><span class="line">hd();<span class="comment">// 可以访问</span></span><br><span class="line"><span class="built_in">console</span>.log(web); <span class="comment">//全局访问: hd is not defined</span></span><br></pre></td></tr></table></figure>
+
+<p>那么如果函数内部和外部同时声明了同名变量，在函数内访问时就会使用函数中声明的变量，而函数外访问使用的是函数外声明的变量。两个不会互相访问。使用var声明的变量很容易造成变量的污染。</p>
+<p>上述说了很多可以粗略的理解为尽量使用let定义变量。</p>
+<p>在使用模板获取值的时候要注意使用的符号是1旁边的点``而不是引号。</p>
+<h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><p>数组的方法有很多，因为是弱类型的关系可以在一个数组里面存放多个类型的值。在查看数组中的元素的时候可以使用console.table()打印的方式可以看到打印出的数组是一个表格的形式,这样看起来十分方便。</p>
+<p><img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200403143330.png"></p>
+<p>es6里有一个展开语法开起来很方便。可以看出使用和不使用时候的区别，对于对象也是同样的道理。</p>
+<p><img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200403145813.png"></p>
+<p><em>解构赋值与展开语法一起使用时，注意展开和吸收的灵活使用</em></p>
+<p><img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200403152135.png"></p>
+<p>而当单独使用解构赋值的时候，显然左右赋值的类型或者说格式应该是一致的</p>
+<p><img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200403152303.png"></p>
+<h3 id="数组函数"><a href="#数组函数" class="headerlink" title="数组函数"></a>数组函数</h3><ul>
+<li>push pop shift unshift 就部说了，这里有一个silce和splice方法。可以看出两种方法的区别，分别是返回一个截取的数组而原数组不受影响以及直接改变了原数组返回的是被截取的数组。</li>
+</ul>
+<p><img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200403154804.png"></p>
+<ul>
+<li>当然splice方法还可以实现添加功能，在参数不同的情况下分别可以实现在原数组上添加或者删除某一个元素重新添加新的元素。其实只需要看这个函数的参数注释就知道对应的含义了。</li>
+</ul>
+<p>![image-20200403154838576](/Users/shawnyue/Library/Application Support/typora-user-images/image-20200403154838576.png)</p>
+<p><img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200403160422.png"></p>
+<p>使用splice函数实现一个元素移动的方法</p>
+<p><img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200403161659.png"></p>
+<ul>
+<li>查找元素是可以使用IndexOf/lastIndexOf方法获取元素的下标也可以使用find方法。find方法接受的是一个函数，函数可以为你在遍历这个数组时如果找到对应的元素而执行相对应的操作。</li>
+</ul>
+<p><img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200403164312.png"></p>
+<p><img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200403164322.png"></p>
+<p>数组中的some和every方法，即在遍历数组中的每一个元素的时候，some表示如果在回调函数中判断时有一个元素满足条件则整个表达式的值为真而every要求每一个元素为真整个表达式的值才为真</p>
+<p>函数在使用function进行定义的时候会获得一个高优先级，即使在声明前对函数进行调用也可以进行调用，而当函数使用变量赋值的方式进行声明时提前调用则会提示没有实例化，这被称作函数的提升。</p>
+<p>在没有了解模块化之前，如果引入的多个js文件中有重名的方法会导致方法的覆盖，这时候需要进行的调整方法有1.将js文件中的方法都封装在一个立即函数中，再把这个函数中的内容交给window对象中的一个属性，通过不同的属性接受可以实现调用不同的方法</p>
+<p><img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200427220649.png"></p>
+<p>或者可以利用let块级作用域的特点在一个大括号内使用let定义一个函数变量，然后同样的将函数变量赋给window中的一个属性达到调用的目的。</p>
+<h2 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h2><p>全局作用域只有一个，每个函数又都有作用域（环境）。这也是为什么在</p>
+<p><img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200427212255.png"></p>
+<p>show函数中访问的this是Lesson对象，而在map函数中this又变成了window。</p>
+<h3 id="作用域的访问关系"><a href="#作用域的访问关系" class="headerlink" title="作用域的访问关系"></a>作用域的访问关系</h3><p>在内部作用域中可以访问到外部作用域的变量，在外部作用域中无法访问到内部作用域的变量。</p>
+<h3 id="变量的提升-声明提前"><a href="#变量的提升-声明提前" class="headerlink" title="变量的提升(声明提前)"></a>变量的提升(声明提前)</h3><p>使用var关键字声明的变量（ 比如 <code>var a = 1</code>），<strong>会在所有的代码执行之前被声明</strong>（但是不会赋值），但是如果声明变量时不是用var关键字（比如直接写<code>a = 1</code>），则变量不会被声明提前。如果先使用还会报引用错误</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(a); <span class="comment">// undefined</span></span><br><span class="line"><span class="keyword">var</span> a = <span class="number">123</span>;</span><br></pre></td></tr></table></figure>
+
+<p>为什么会有变量提升呢，在js运行时会有一个预编译的过程。</p>
+<p><strong>规律1：任何变量，如果未经声明就赋值，此变量是属于 window 的属性</strong>，而且不会做变量提升。（注意，无论在哪个作用域内赋值）</p>
+<p><strong>规律2：一切声明的全局变量，全是window的属性</strong>。（注意，我说的是在全局作用域内声明的全局变量，不是说局部变量）</p>
+<p>未被声明的变量属于window但不会被提升，声明的全局变量属于window会被提升。</p>
+<h2 id="this"><a href="#this" class="headerlink" title="this"></a>this</h2><p>函数中的this指的是window对象</p>
+<p>对象方法中的this指的是当前对象的引用</p>
+<h2 id="页面构建"><a href="#页面构建" class="headerlink" title="页面构建"></a>页面构建</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">addMessage</span>(<span class="params">element,message</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> messageElement = <span class="built_in">document</span>.createElement(<span class="string">&quot;li&quot;</span>);</span><br><span class="line">  messageElement.textContent = messgae;</span><br><span class="line">  element.appendChild(messageElement);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> first = <span class="built_in">document</span>.getElementById(<span class="string">&quot;first&quot;</span>);</span><br><span class="line">addMessage(first,<span class="string">&quot;hello&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+
+
+<p>通过上述方式可以为元素添加一个子元素，主要需要注意的是这样的一个操作流程。如果需要使用这个函数则，需要为这个函数传入一个元素，方式是通过内置的getElementById的方式，获取到id之后就可以作为参数传递给这个方法使用。创建后续节点并把它添加到dom树上。</p>
+<p>文本对象模型DOM元素 </p>
+<blockquote>
+<p>页面构建的两个步骤 html解析与DOM构建  js脚本的执行</p>
+</blockquote>
+<p>在页面没有被整个解析完之前上述两个步骤将会交替执行。</p>
+<p>这个DOM是不是就表示页面中的每一个元素呢？就是每一个标签。对于这些节点的形式就像是数据结构中的树 出了元素html之外其他每一个标签都有一个父节点和任意多个子节点。DOM元素从html中解析而来，两者类似但并不相同，当解析到js时，回停止构建DOM并开始执行js代码。另外当页面中的元素位置发生错误时，浏览器会自动修正错误的代码。js代码是由js引擎执行的</p>
+<p>js可以在任意程度上修改DOM结构，可以添加或删除元素。但由于他不能操作还没有被创建的元素 所以如果想在也没使用js代码通常会把它放在页面的底端。如果有多个js片段，他们之间的变量是可以共享的，这是因为全局Window对象存在于整个生命周期并且存储着所有js变量。</p>
+<p>当页面构建完成之后就会进入事件处理环节。</p>
+<h2 id="事件处理"><a href="#事件处理" class="headerlink" title="事件处理"></a>事件处理</h2><p>所有已生成的时间，无论是用户的点击还是键盘按压或者是服务器端的ajax事件都会被放在一个事件队列中。以他们被浏览器检测到的顺序进行排列。浏览器回循环检查时间的队列头如果有事件则会进行处理。</p>
+<p>事件处理器是指当某个事件发生之后，我们希望执行的函数。想要达到这个目标，最关键的是知道什么样的事件发生了。也就是需要为这个事件注册一个处理器。</p>
+<blockquote>
+<p>1.通过把函数赋给某一个属性 windown.load = function(){}</p>
+<p>2.通过使用内置的addEventListener方法</p>
+</blockquote>
+<p>document.body.onclick = function(){} 代表的含义是为dom元素中的body元素的点击事件注册一个处理器。这样做虽然十分方便但是可能会不小心将上面注册的处理器给覆盖掉，因为这种方式只能为一个事件注册一个处理器。但如果使用第二种方式就不会有这样的情况发生。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">document</span>.body.addEventLisenter(<span class="string">&quot;click&quot;</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> second = <span class="built_in">document</span>.getElementById(<span class="string">&quot;second&quot;</span>);</span><br><span class="line">  addMessage(<span class="string">&quot;second&quot;</span>,<span class="string">&quot;click&quot;</span>);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+
+
+<p>通过这样的方式可以指明是为元素中的什么事件注册处理器，如这里给的click事件。</p>
+<p>就目前来看的话，掌握元素的属性和方法也就是api好像是最为重要的。</p>
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><blockquote>
+<p>JavaScript中最重要的概念是函数。函数也可以被视为其他任意类型的javascript对象，它可以被引用，以字面量形式声明({})，作为函数参数进行传递</p>
+</blockquote>
+<p>对象所具有的操作函数都可以，并且函数还可以被调用。</p>
+<h3 id="回调函数"><a href="#回调函数" class="headerlink" title="回调函数"></a>回调函数</h3><p>建立了一个将在随后调用的函数。建立的函数会被其他函数在某个稍后的合适的时间点再来调用。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/02/05/jquery%E5%9F%BA%E7%A1%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="GuAn">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CodePig">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/05/jquery%E5%9F%BA%E7%A1%80/" class="post-title-link" itemprop="url">jquery基础</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-05 21:55:57" itemprop="dateCreated datePublished" datetime="2020-02-05T21:55:57+08:00">2020-02-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-29 16:12:02" itemprop="dateModified" datetime="2020-04-29T16:12:02+08:00">2020-04-29</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>​        这个漫长的假期，实在是有点不太想搞python，休息了那么久昨天看了一点es6今天看完了js的部分基础和vue的部分教程，感觉还是没有深入理解，像是看了和没看一样，后续再看看书吧。但是还是要继续走下去，趁着晚上的时间看一点jquery的内容。慕课网上的教程都是文字版的，一边看一边学再写这个感觉好麻烦。</p>
+<h2 id="jquery对象与dom对象"><a href="#jquery对象与dom对象" class="headerlink" title="jquery对象与dom对象"></a>jquery对象与dom对象</h2><p>​        学过js的不管会不会肯定都听过dom这个词，至少当时在上h5课的时候老师没少说。文档对象看的多了多少都是有概念的实际上的区别在于你是不是熟悉这些api，不常使用的话肯定也就没得说了。</p>
+<p>如果知道dom操作的话就是通过getElementById()这种方式获得标签而jquery就是元素选择器的方式。</p>
+<ol>
+<li>通过jQuery方法包装后的对象，是一个类数组对象。它与DOM对象完全不同，唯一相似的是它们都能操作DOM。</li>
+<li>通过jQuery处理DOM的操作，可以让开发者更专注业务逻辑的开发，而不需要我们具体知道哪个DOM节点有那些方法，也不需要关心不同浏览器的兼容性问题，我们通过jQuery提供的API进行开发，代码也会更加精短。</li>
+</ol>
+<h3 id="dom元素与jquery之间的转换"><a href="#dom元素与jquery之间的转换" class="headerlink" title="dom元素与jquery之间的转换"></a>dom元素与jquery之间的转换</h3><p>​        通常会在jquery对象前面加上<code>$</code>加以区分，打印出这个对象可以看到这是一个数组，下标为0的是这个dom元素，这就提供了对象到元素的转换方式，实际上就是通过拿到数组对象中的元素。后面的操作就转换成了对dom元素的操作。而dom元素想要转换成jquery对象则只需要将这个对象作为参数传给$()即可，这个元素会被包装成相对应的对象。</p>
+<p>想要使用jQuery代码需要注意他的入口函数，也即任意代码应该包括在这个函数内部。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	...</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>jQuery的特点有链式编程，实际上现在java里也有这种方式，在一个对象后面一直点点点。<strong>隐式迭代</strong>：隐式 对应的是 显式。隐式迭代的意思是：在方法的内部会为匹配到的所有元素进行循环遍历，执行相应的方法；而不用我们再进行循环，简化我们的操作，方便我们调用。</p>
+<h2 id="选择器"><a href="#选择器" class="headerlink" title="选择器"></a>选择器</h2><p>1.通过id获得对象</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">&quot;#id&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>2.类选择器</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">&quot;.class&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>3.元素选择器</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">&quot;div&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>4.选择全部</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">&#x27;*&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+<p>层级选择器有很多个名字 感觉很麻烦，这种层级的感觉和设置css是一样的。</p>
+<p>jquery对象绑定的事件中，this指js中的dom对象。【重要】</p>
+<h2 id="Ajax"><a href="#Ajax" class="headerlink" title="Ajax"></a>Ajax</h2><p>异步js和xmlHTTPrequest.什么叫异步呢，在这里异步更多代表的是局部刷新的意思，浏览页面虽然没有整体刷新但是页面上的某一个部分被改变了。通俗的理解 同步是一个任务必须按照步骤进行，而异步则是可以同时进行多个任务比如说边排队边玩手机。</p>
+<p>原生js请求的方式为</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> xr = <span class="keyword">new</span> XmlHttpRequest();</span><br><span class="line">xr.open(<span class="string">&#x27;GET&#x27;</span>,<span class="string">&#x27;url&#x27;</span>,<span class="literal">true</span>); <span class="comment">//设置请求的方式，url，是否异步</span></span><br><span class="line">xr.send();</span><br><span class="line">xr.onreadystatechange = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">			<span class="function"><span class="title">if</span>(<span class="params">xr.readyState == <span class="number">4</span></span>)</span>&#123;</span><br><span class="line">					<span class="function"><span class="title">if</span>(<span class="params">xr.status == <span class="number">200</span></span>)</span>&#123;</span><br><span class="line">						<span class="built_in">console</span>.log(xr.response);</span><br><span class="line">					&#125;</span><br><span class="line">			&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>ajax请求方式为</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">           $.ajax(&#123;</span><br><span class="line">               type: <span class="string">&quot;GET&quot;</span>,</span><br><span class="line">               url: <span class="string">&quot;url&quot;</span>,</span><br><span class="line">               <span class="keyword">async</span>: <span class="literal">true</span>,</span><br><span class="line">               <span class="function"><span class="title">success</span>(<span class="params">response</span>)</span>&#123;</span><br><span class="line">                   <span class="built_in">console</span>.log(response)</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;)</span><br><span class="line">       &#125;)</span><br></pre></td></tr></table></figure>
+
+<p>可以简写为</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">            $.ajax(&#123;</span><br><span class="line">                url: <span class="string">&quot;url&quot;</span>,</span><br><span class="line">                <span class="function"><span class="title">success</span>(<span class="params">response</span>)</span>&#123;</span><br><span class="line">                    <span class="built_in">console</span>.log(response)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;)</span><br><span class="line"></span><br><span class="line">$(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">            $.get(<span class="string">&quot;url&quot;</span>,<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">                <span class="built_in">console</span>.log(res)</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;)</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/02/04/es6%E9%83%A8%E5%88%86%E7%89%B9%E6%80%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="GuAn">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CodePig">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/04/es6%E9%83%A8%E5%88%86%E7%89%B9%E6%80%A7/" class="post-title-link" itemprop="url">es6部分特性</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-02-04 18:44:42 / 修改时间：18:48:04" itemprop="dateCreated datePublished" datetime="2020-02-04T18:44:42+08:00">2020-02-04</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>本篇在vscode中完成直接复制代码上来</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 需要重新编译 npm run bulid</span></span><br><span class="line"><span class="comment">var 全局</span></span><br><span class="line"><span class="comment">let</span></span><br><span class="line"><span class="comment">const 常量</span></span><br><span class="line"><span class="comment">var a = 1;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">&#123;</span></span><br><span class="line"><span class="comment">    var a = 3</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">console.log(a)</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//ES6允许按照一定模式，从数组和对象中提取值，对变量进行赋值 称为 解构</span></span><br><span class="line"><span class="comment">// let [a, b, c] = [0, 1, 2]</span></span><br><span class="line"><span class="comment">// 默认值 只要左右解构一样就可以识别 这个默认值可以用在整个js中 undifiend会取默认值 null就为null</span></span><br><span class="line"><span class="comment">// let [foo = true] = []</span></span><br><span class="line"><span class="comment">// 对象的解构</span></span><br><span class="line"><span class="keyword">let</span> &#123; foo, bar &#125; = &#123; <span class="attr">foo</span>: <span class="string">&#x27;js&#x27;</span>, <span class="attr">bar</span>: <span class="string">&#x27;aaa&#x27;</span> &#125;</span><br><span class="line"><span class="built_in">console</span>.log(foo + bar)</span><br><span class="line"><span class="comment">// 字符串的解构 字符串被转换成了类似数组的对象</span></span><br><span class="line"><span class="keyword">const</span> [a, b, c, d] = <span class="string">&#x27;jsjs&#x27;</span></span><br><span class="line"><span class="built_in">console</span>.log(a);</span><br><span class="line"><span class="built_in">console</span>.log(b);</span><br><span class="line"><span class="built_in">console</span>.log(c);</span><br><span class="line"><span class="built_in">console</span>.log(d);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 对象扩展运算符 不确定参数有几个的时候可以使用，在字符串赋值的时候 如果直接将一个字符串赋值给另一个则赋给的是已创建好的数组的引用</span></span><br><span class="line"><span class="keyword">let</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line"><span class="keyword">let</span> arr2 = [...arr1];</span><br><span class="line"><span class="comment">// console.log(&quot;arr1&quot; + arr1);</span></span><br><span class="line">arr2.push(<span class="number">4</span>);</span><br><span class="line"><span class="built_in">console</span>.log(arr1)</span><br><span class="line"><span class="built_in">console</span>.log(arr2);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">...args</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(args[<span class="number">0</span>])</span><br><span class="line">    <span class="built_in">console</span>.log(args[<span class="number">1</span>])</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">add(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用for of 循环 (for let a of arr1 a即为数组中的元素)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> a <span class="keyword">of</span> arr1) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(a)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 字符串模板 传统的方式像其他语言一样使用+号进行连接 字符串模板运行 使用的符号为`</span></span><br><span class="line"><span class="comment">// 支持html标签 也可以直接获得运算结果</span></span><br><span class="line"><span class="keyword">let</span> str1 = <span class="string">&#x27;aaa&#x27;</span>;</span><br><span class="line"><span class="keyword">let</span> str2 = <span class="string">`非aaabbb<span class="subst">$&#123;str1&#125;</span>,cccc`</span>;</span><br><span class="line"><span class="built_in">console</span>.log(str2);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Json</span></span><br><span class="line"><span class="keyword">let</span> json1 = &#123;</span><br><span class="line">    <span class="string">&#x27;0&#x27;</span>: <span class="string">&#x27;aaa&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;1&#x27;</span>: <span class="string">&#x27;bb&#x27;</span>,</span><br><span class="line">    length: <span class="number">2</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> json = &#123;</span><br><span class="line">    <span class="comment">// 给一个变量名然后使用解构的方式去使用返回的值</span></span><br><span class="line">    a: <span class="string">&#x27;jspang&#x27;</span>,</span><br><span class="line">    b: <span class="string">&#x27;技术胖&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fun</span>(<span class="params">&#123; a, b &#125;</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(a, b);</span><br><span class="line">&#125;</span><br><span class="line">fun(json);</span><br><span class="line"><span class="comment">//可以将获取到的json转换成数组再进行操作 前提是这个数组中必须包含length属性，Array.from(json)</span></span><br><span class="line"><span class="comment">// Array.of() parse to array</span></span><br><span class="line"><span class="keyword">let</span> arr = <span class="built_in">Array</span>.from(json);</span><br><span class="line"><span class="built_in">console</span>.log(arr);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 箭头函数 如果方法体中语句多于一句则仍需要加上大括号</span></span><br><span class="line"><span class="comment">// 箭头函数内不可以使用new 即这种表达方式不可以用作构造函数</span></span><br><span class="line"><span class="keyword">var</span> del = <span class="function">(<span class="params">a, b = <span class="number">1</span></span>) =&gt;</span> a - b</span><br><span class="line"><span class="built_in">console</span>.log(del(<span class="number">3</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> arr3 = [<span class="string">&#x27;jspang&#x27;</span>, <span class="string">&#x27;技术胖&#x27;</span>, <span class="string">&#x27;前端教程&#x27;</span>];</span><br><span class="line"><span class="comment">// 循环替代 将数组中的所有内容均替换成函数中的字符串</span></span><br><span class="line"><span class="built_in">console</span>.log(arr3.map(<span class="function"><span class="params">a</span> =&gt;</span> <span class="string">&#x27;web&#x27;</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// some有循环的功能</span></span><br><span class="line">arr3.some(<span class="function"><span class="params">x</span> =&gt;</span> <span class="built_in">console</span>.log(x))</span><br><span class="line"><span class="comment">// map也有替代的功能</span></span><br><span class="line"><span class="built_in">console</span>.log(arr3.map(<span class="function"><span class="params">x</span> =&gt;</span> <span class="string">&#x27;web&#x27;</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// es6中的对象</span></span><br><span class="line"><span class="comment">//可以把声明好的变量直接赋给对象 如果是使用从后台取出的参数</span></span><br><span class="line"><span class="comment">//作为key值那么声明对象的方式就变为</span></span><br><span class="line"><span class="keyword">let</span> key = <span class="string">&#x27;0&#x27;</span></span><br><span class="line"><span class="keyword">let</span> obj = &#123;</span><br><span class="line">    [key]: <span class="string">&quot;aaa&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> name = <span class="string">&#x27;zhangsan&#x27;</span></span><br><span class="line"><span class="keyword">let</span> age = <span class="number">23</span>;</span><br><span class="line"><span class="keyword">let</span> person = &#123; name, age &#125;</span><br><span class="line"><span class="built_in">console</span>.log(person)</span><br><span class="line"><span class="comment">// set中不允许重复的值</span></span><br><span class="line"><span class="keyword">let</span> setArr = <span class="keyword">new</span> <span class="built_in">Set</span>([<span class="string">&#x27;jspang&#x27;</span>, <span class="string">&#x27;技术胖&#x27;</span>, <span class="string">&#x27;web&#x27;</span>, <span class="string">&#x27;jspang&#x27;</span>]);</span><br><span class="line"><span class="comment">// for (let item of setArr) &#123;</span></span><br><span class="line"><span class="comment">//     console.log(item);</span></span><br><span class="line"><span class="comment">// &#125;</span></span><br><span class="line">setArr.forEach(<span class="function"><span class="params">value</span> =&gt;</span> <span class="built_in">console</span>.log(value));</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(setArr.size);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> json3 = &#123;</span><br><span class="line">    name: <span class="string">&#x27;jspang&#x27;</span>,</span><br><span class="line">    skill: <span class="string">&#x27;web&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(json3.name);</span><br><span class="line"></span><br><span class="line"><span class="comment">//如果使用map 需要先创建Map对象 和set一样</span></span><br><span class="line"><span class="keyword">var</span> map = <span class="keyword">new</span> <span class="built_in">Map</span>();</span><br><span class="line">map.set(name, <span class="string">&#x27;js&#x27;</span>)</span><br><span class="line">map.set(age, <span class="number">22</span>)</span><br><span class="line">map.forEach(<span class="function"><span class="params">value</span> =&gt;</span> <span class="built_in">console</span>.log(value))</span><br><span class="line"></span><br><span class="line"><span class="comment">// 模块化 可以将变量函数对象进行模块化供外部使用</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">var</span> a = <span class="string">&#x27;myjs&#x27;</span> <span class="comment">//此时就可以在另一个文件中使用import &#123;a&#125; from ./src/index.js 的方式使用这个变量</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//当多个变量需要输出的时候 则将这几个变量打包成对象即可</span></span><br><span class="line"><span class="comment">// export &#123;a,b,c&#125; 或者 export &#123; x as a,y as b&#125;这样的形式使用别名 可以export多个 变量函数可以一起 当使用import的时候也是一样 而当使用default修饰的时候就只能有一个并且import的时候可以不加&#123;&#125;</span></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/11/19/python%E5%9F%BA%E7%A1%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="GuAn">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CodePig">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/11/19/python%E5%9F%BA%E7%A1%80/" class="post-title-link" itemprop="url">python基础</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-11-19 21:16:41 / 修改时间：22:14:07" itemprop="dateCreated datePublished" datetime="2019-11-19T21:16:41+08:00">2019-11-19</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>现在真的觉得要学习的东西太多了，真的学不过来了，必须吐槽了，java的东西还没怎么掌握又要入门python，有点羡慕现在大一的同学可以上这门课，想来想去还是觉得能上自己想上的课时很幸福的，但是对于我这种大四的学生来说已经有点遥远了。上软测课的时候老师问我们现在学什么，毫无疑问我们当然学java，老师说别学了赶紧转python，就了解到的东西来看，很多现阶段大热的东西都是python多一点，但是那些需要扎实的理论基础，真的觉得有点无力。但是昨天也了解到python也可以做后台，也有框架，鉴于此情况还是学习一下，希望有朝一日可以用得上。</p>
+<p>本片参照GitHub上开源项目 <a target="_blank" rel="noopener" href="https://github.com/jackfrued/Python-100-Days">100天从新手到大师</a>进行学习的，看到这种标题还是有点紧张的，但是架不住这项目快7万的星，只能说两个字，:cow: :beer: 。</p>
+<h2 id="python基础"><a href="#python基础" class="headerlink" title="python基础"></a>python基础</h2><h3 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h3><p>常用数据类型</p>
+<ul>
+<li>整形 3.x之后只有int型了，不会真的还有人在学2.x吧？ 支持常用的进制来表示</li>
+<li>浮点型</li>
+<li>字符串 单双引号都可以 字符串还有原始字符串表示法、字节字符串表示法、Unicode字符串表示法</li>
+<li>布尔</li>
+</ul>
+<h3 id="变量名"><a href="#变量名" class="headerlink" title="变量名"></a>变量名</h3><p>和常见的语言一样，由数字字母下划线组成，不能以数字开头，不能使用关键字，大小写严格。</p>
+<p>PEP 8要求：</p>
+<ul>
+<li>用小写字母拼写，多个单词用下划线连接。</li>
+<li>受保护的实例属性用单个下划线开头（后面会讲到）。</li>
+<li>私有的实例属性用两个下划线开头（后面会讲到）。</li>
+</ul>
+<p>为什么不是驼峰….</p>
+<h3 id="变量的使用"><a href="#变量的使用" class="headerlink" title="变量的使用"></a>变量的使用</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">使用变量保存数据并进行算术运算</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">a = <span class="number">321</span></span><br><span class="line">b = <span class="number">123</span></span><br><span class="line">print(a + b)</span><br><span class="line">print(a - b)</span><br><span class="line">print(a * b)</span><br><span class="line">print(a / b)</span><br><span class="line">print(a // b)</span><br><span class="line">print(a % b)</span><br><span class="line">print(a ** b)</span><br></pre></td></tr></table></figure>
+
+<p>可以使用type()函数检查变量的类型，js里是typeof()。</p>
+<p>可以使用Python中内置的函数对变量类型进行转换。这里也和js有点像都是使用自己类型的函数进行转换。</p>
+<ul>
+<li><code>int()</code>：将一个数值或字符串转换成整数，可以指定进制。</li>
+<li><code>float()</code>：将一个字符串转换成浮点数。</li>
+<li><code>str()</code>：将指定的对象转换成字符串形式，可以指定编码。</li>
+<li><code>chr()</code>：将整数转换成该编码对应的字符串（一个字符）。</li>
+<li><code>ord()</code>：将字符串（一个字符）转换成对应的编码（整数）。</li>
+</ul>
+<p>函数input(‘a = ‘) 接受控制台输入的内容，可以在函数内自定义内容作为控制台的提示。在使用的时候使用的占位符%d  %f等，这个c语言一样。</p>
+<p>练习的时候发现自己占位符已经不会用了,c语言好久没有写过了…:cry: </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">华氏度转摄氏度</span></span><br><span class="line"><span class="string">公式 C=(F - 32) / 1.8</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">f = float(input(&#x27;请输入华氏度 &#x27;))</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">c = (f - 32) / 1.8</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">print(&#x27;%f&#x27; % c)</span></span><br><span class="line"><span class="string"></span></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">输入年份 如果是闰年输出True 否则输出False</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line">year = <span class="built_in">int</span>(<span class="built_in">input</span>(<span class="string">&#x27;输入想要计算的年份 &#x27;</span>))</span><br><span class="line"></span><br><span class="line">flag = (year % <span class="number">4</span> == <span class="number">0</span> <span class="keyword">and</span> year / <span class="number">100</span> == <span class="number">0</span> <span class="keyword">or</span> year % <span class="number">400</span> == <span class="number">0</span>)</span><br><span class="line">print(flag)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>写了两段不太适应这种不定义类型的方式而且在if后面使用大括号报错了，这和我熟悉的用法不同。</p>
+<h3 id="分支结构"><a href="#分支结构" class="headerlink" title="分支结构"></a>分支结构</h3><p>也就是if - else 进行条件判断来决定执行那一段代码，python里if else后面跟的是冒号<code>:</code>。可以看到下方的代码是没有使用花括号的,python使用不同的缩进的方式来表示不同的代码层次。也即如果需要在if后面执行多条语句只需要保证if判断后的语句的缩进相同即可。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">用户身份验证</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">username = <span class="built_in">input</span>(<span class="string">&#x27;请输入用户名: &#x27;</span>)</span><br><span class="line">password = <span class="built_in">input</span>(<span class="string">&#x27;请输入口令: &#x27;</span>)</span><br><span class="line"><span class="comment"># 用户名是admin且密码是123456则身份验证成功否则身份验证失败</span></span><br><span class="line"><span class="keyword">if</span> username == <span class="string">&#x27;admin&#x27;</span> <span class="keyword">and</span> password == <span class="string">&#x27;123456&#x27;</span>:</span><br><span class="line">    print(<span class="string">&#x27;身份验证成功!&#x27;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    print(<span class="string">&#x27;身份验证失败!&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>else if的方式 elif 与 else: if[表达式]: 推荐的方式为elif。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/11/14/linux%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="GuAn">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CodePig">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/11/14/linux%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">linux学习笔记</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-11-14 16:30:27" itemprop="dateCreated datePublished" datetime="2019-11-14T16:30:27+08:00">2019-11-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-11-20 10:22:06" itemprop="dateModified" datetime="2019-11-20T10:22:06+08:00">2019-11-20</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>linux系统映像里以前在南京读书的时候好像没有说过，来了这里半学期的课程，老师上课还是一副不耐烦的样子，挺尴尬的，现在好多技术都是服务器上的，只好再次学起这个系统。这个笔记是看尚硅谷韩顺平老师的视频写的。</p>
+<p>我用的是阿里的服务器，内核为centos。</p>
+<h2 id="linux基础"><a href="#linux基础" class="headerlink" title="linux基础"></a>linux基础</h2><p>Linux的历史和安装过程这里不再多做介绍了,感兴趣的同学可以自己去了解一下。同时它与Windows操作系统的比较也不在多说，视频里介绍的都是表面的不同，对于学过os的同学来说个人觉得没什么意义，让我觉得有意思的是这个吉祥物是个企鹅，如果你有注意到的话可以看见在阿里的控制台上会显示一个小企鹅。下面学习其他内容。</p>
+<h3 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h3><p>层级式的树状结构只有一个根目录，对于Linux来说<code>一切皆为文件,</code>系统中的硬件也会被映射成文件进行管理。</p>
+<img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20191114171209.png" style="zoom:50%;" /> 
+
+<p>可以看到根目录的文件夹及文件。</p>
+<p>/bin存放的内容为常用的命令  /home存放普通用户，每当你在系统中创建一个用户时，目录下就会对应生成这个用户的文件夹。 /root为用户权限的主目录。 /etc配置文件  /usr通常存放应用程序和相关文件。/dev 设备映射文件夹 /media识别u盘光盘等  /mnt通常为共享文件夹。/usr/local 安装软件的目录。</p>
+<h3 id="实际操作"><a href="#实际操作" class="headerlink" title="实际操作"></a>实际操作</h3><p>我使用的连接终端的工具是Termius，感觉还不错，有命令行也可以上传文件，比较方便。</p>
+<h4 id="vi-vim"><a href="#vi-vim" class="headerlink" title="vi vim"></a>vi vim</h4><p>直接搜索vim并安装，在这里上课的时候花过一段时间介绍过，对他的一些基本操作我还有点印象。当我们用vim打开一个文档的时候可以对文档进行浏览，或者使用一些快捷键对文档进行操作。按i进入插入模式，编辑完成后按esc进入命令行模式输入:wq保存并退出 :q直接退出  :q!强制不保存退出。</p>
+<p>常用的快捷键：yy 复制当前行 nyy复制光标小的n行 dd删除当前行 ndd删除光标下的n行 / 查找指定的字符串 :set nu/nonu显示取消行号 G跳到尾行 gg跳到首行 撤销操作u  n+shift+g跳到第n行</p>
+<h3 id="开机，重启注销命令"><a href="#开机，重启注销命令" class="headerlink" title="开机，重启注销命令"></a>开机，重启注销命令</h3><p>shutdown</p>
+<p>shutdown -h now 立即关机</p>
+<p>shutdown -h 1 一分钟后关机</p>
+<p>shutdown  -r now 立即重启</p>
+<p>halt</p>
+<p>关机</p>
+<p>reboot </p>
+<p>重启</p>
+<p>sync</p>
+<p>将内存中的数据同步，关机之前执行。</p>
+<h3 id="用户登录和注销"><a href="#用户登录和注销" class="headerlink" title="用户登录和注销"></a>用户登录和注销</h3><p>尽量不使用root登录，而要使用普通用户再使用命令su切换权限，logout注销当前用户，命令行下生效。</p>
+<h3 id="用户管理"><a href="#用户管理" class="headerlink" title="用户管理"></a>用户管理</h3><p>众所周知，linux为多用户操作系统，对权限的管理十分重要，系统中可以有多个用户，不同的用户归于不同的组，不同的组拥有不同的权限，当用户属于那个组的时候也就拥有了对应的权限，所有的用户都在home目录下。</p>
+<p>useradd 用户名创建用户后，同时也创建了一个同名的组，这个用户在这个组里，同时/home目录下多了一个文件夹。useradd -d /home/<dir> 用户名在指定文件夹下新建一个用户。passwd 用户名 给一个用户指定密码。 userdel 用户名 删除一个用户 userdel -r 用户名删除用户同时删除它的home目录。</p>
+<p>id 用户名 查询用户的信息 如果用户不存在就会返回无此用户。</p>
+<p>切换用户，权限不够的时候使用su命令进行切换。由高权限切换到低权限不需要输入密码，需要切回原来的用户主需要退出当前的用户即可exit。</p>
+<h3 id="用户组"><a href="#用户组" class="headerlink" title="用户组"></a>用户组</h3><p>groupadd 组名 / groupdel 组名  useradd -g 用户组 用户名 创建一个在指定组下的用户 usermod -g 用户组 用户名 修改用户的组</p>
+<h3 id="用户配置文件"><a href="#用户配置文件" class="headerlink" title="用户配置文件"></a>用户配置文件</h3><p>创建的用户在/etc/passwd记录了用户的信息， /etc/group分组 etc/shadow密码</p>
+<h3 id="实用指令"><a href="#实用指令" class="headerlink" title="实用指令"></a>实用指令</h3><p>这里只记录一些我没怎么用过的命令，常用的cd ls等就不再说了，mkdir -p /a/b 一次可以创建多个目录 不带参数只能创建一级,rmdir删除目录 只能删除空目录 如果目录不为空需要使用命令 rm -rf /a, touch [][][文件1] [文件2] 创建空文件可创建多个，cp 拷贝命令 如果需要拷贝一个目录 则使用参数 cp -r 源文件夹 目标文件夹 如果有相同文件时 在cp前加\ 可以全部覆盖，mv 重命名与移动 在同一个目录和不同目录的区别。cat 查看命令 cat -n 文件 | more 分页显示行号查看 more/less查看文件.</p>
+<h3 id="gt-与-gt-gt"><a href="#gt-与-gt-gt" class="headerlink" title="&gt; 与 &gt;&gt;"></a>&gt; 与 &gt;&gt;</h3><p>输出重定向与追加，重定向会覆盖原来的内容而追加不会</p>
+<p> ls -l &gt; a.txt 将命令输出的内容重定向到一个文件中,如果文件不存在就会创建。&gt;&gt; 同理</p>
+<p>find /home -name/user/size a.txt/a.txt/+/-/20M 不同的查找命令</p>
+<p>locate定位，使用之前更新updatedb，因为这个命令基于它自己创建的locate库。</p>
+<p>grep命令，通常与其它命令配合使用，比如 cat a.txt | grep -ni a 意思为把查看的结果交给grep查找a这个字符并显示行号忽略大小写，管道操作符| 将前面指令的结果交给后面处理。</p>
+<h3 id="权限管理"><a href="#权限管理" class="headerlink" title="权限管理"></a>权限管理</h3><p>chown chgrp 改变文件所有者和组</p>
+<p>文件的类型 -普通文件 d目录文件 l软连接 </p>
+<p>rwx三种权限</p>
+<p>r=4,w=2.x=1</p>
+<p>chmod u=rwx,g=rx,o=x</p>
+<p>chmod 751</p>
+<p>chmod u-x,g+w</p>
+<p>作用在文件上表示 对文件有查看 修改 执行权限，想要删除文件需要对文件所在的目录有w权限</p>
+<p>作用在文件夹上表示对文件夹有查看创建删除重命名以及可进入权限</p>
+<p>rw文件所有者的权限 读写</p>
+<p>r– 文件所在组的用户的权限只读</p>
+<p>r– 其他用户的权限</p>
+<h3 id="进程管理"><a href="#进程管理" class="headerlink" title="进程管理"></a>进程管理</h3><h4 id="什么是进程"><a href="#什么是进程" class="headerlink" title="什么是进程"></a>什么是进程</h4><p>进程是程序的一次运行</p>
+<p>查看进程的相关命令为 ps -a -u -x</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/11/04/jwt%E5%88%9D%E6%8E%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="GuAn">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CodePig">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/11/04/jwt%E5%88%9D%E6%8E%A2/" class="post-title-link" itemprop="url">jwt初探</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-11-04 19:05:43" itemprop="dateCreated datePublished" datetime="2019-11-04T19:05:43+08:00">2019-11-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-11-06 11:23:54" itemprop="dateModified" datetime="2019-11-06T11:23:54+08:00">2019-11-06</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="jwt是什么"><a href="#jwt是什么" class="headerlink" title="jwt是什么"></a>jwt是什么</h1><p>jwt全称Json Web Token。实际使用过程中可能对json也需要有一定的了解。但是在学完xml之后，对比与一系列的标签现在不过是又将他们规范为一些键值对而已。当然使用json的有点有很多，使用的资源少同时也更加容易理解，作为前后端数据交互的格式十分方便。</p>
+<p>其基本结构为Header.Payload.Signature，本身是一个很长的字符串，三部分分别对应头部，负载，签名。头部存储的内容为算法和类型</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;alg&quot;</span>: <span class="string">&quot;HS256&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;typ&quot;</span>: <span class="string">&quot;JWT&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>负载中存储的内容可以使用官方提供的字段也可以定义私有字段</p>
+<p>签名则是根据前两部分生成的，一旦前两部分的内容被修改，就会失效。</p>
+<p>使用时需要首先指明一个加密的密钥，这个密钥只有服务器知道。经过加密之后将其产生的结果返回给用户。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">HMACSHA256(</span><br><span class="line">  base64UrlEncode(header) + <span class="string">&quot;.&quot;</span> +</span><br><span class="line">  base64UrlEncode(payload),</span><br><span class="line">  secret)</span><br></pre></td></tr></table></figure>
+
+<p>用户在登录的时候除了一些必要的信息比如账号密码，还有可能会根据需要添加新的内容，把这些附加的信息单独取出来进行加密并在完成登录后返回给用户，以后用户在请求资源的时候只需要携带这串密文就可以验证是否有权限进行访问。同时它支持跨域访问。</p>
+<h1 id="使用springboot-jwt-springsecurity进行权限验证"><a href="#使用springboot-jwt-springsecurity进行权限验证" class="headerlink" title="使用springboot+jwt+springsecurity进行权限验证"></a>使用springboot+jwt+springsecurity进行权限验证</h1>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
   </div>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
 
 
 
@@ -274,9 +1196,13 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">1</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">日志</span>
         </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">标签</span>
       </div>
   </nav>
 </div>
