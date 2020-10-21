@@ -253,67 +253,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/02/04/es6%E9%83%A8%E5%88%86%E7%89%B9%E6%80%A7/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="GuAn">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="CodePig">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/02/04/es6%E9%83%A8%E5%88%86%E7%89%B9%E6%80%A7/" class="post-title-link" itemprop="url">es6部分特性</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2020-02-04 18:44:42 / Modified: 18:48:04" itemprop="dateCreated datePublished" datetime="2020-02-04T18:44:42+08:00">2020-02-04</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>本篇在vscode中完成直接复制代码上来</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 需要重新编译 npm run bulid</span></span><br><span class="line"><span class="comment">var 全局</span></span><br><span class="line"><span class="comment">let</span></span><br><span class="line"><span class="comment">const 常量</span></span><br><span class="line"><span class="comment">var a = 1;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">&#123;</span></span><br><span class="line"><span class="comment">    var a = 3</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">console.log(a)</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//ES6允许按照一定模式，从数组和对象中提取值，对变量进行赋值 称为 解构</span></span><br><span class="line"><span class="comment">// let [a, b, c] = [0, 1, 2]</span></span><br><span class="line"><span class="comment">// 默认值 只要左右解构一样就可以识别 这个默认值可以用在整个js中 undifiend会取默认值 null就为null</span></span><br><span class="line"><span class="comment">// let [foo = true] = []</span></span><br><span class="line"><span class="comment">// 对象的解构</span></span><br><span class="line"><span class="keyword">let</span> &#123; foo, bar &#125; = &#123; <span class="attr">foo</span>: <span class="string">&#x27;js&#x27;</span>, <span class="attr">bar</span>: <span class="string">&#x27;aaa&#x27;</span> &#125;</span><br><span class="line"><span class="built_in">console</span>.log(foo + bar)</span><br><span class="line"><span class="comment">// 字符串的解构 字符串被转换成了类似数组的对象</span></span><br><span class="line"><span class="keyword">const</span> [a, b, c, d] = <span class="string">&#x27;jsjs&#x27;</span></span><br><span class="line"><span class="built_in">console</span>.log(a);</span><br><span class="line"><span class="built_in">console</span>.log(b);</span><br><span class="line"><span class="built_in">console</span>.log(c);</span><br><span class="line"><span class="built_in">console</span>.log(d);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 对象扩展运算符 不确定参数有几个的时候可以使用，在字符串赋值的时候 如果直接将一个字符串赋值给另一个则赋给的是已创建好的数组的引用</span></span><br><span class="line"><span class="keyword">let</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line"><span class="keyword">let</span> arr2 = [...arr1];</span><br><span class="line"><span class="comment">// console.log(&quot;arr1&quot; + arr1);</span></span><br><span class="line">arr2.push(<span class="number">4</span>);</span><br><span class="line"><span class="built_in">console</span>.log(arr1)</span><br><span class="line"><span class="built_in">console</span>.log(arr2);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">...args</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(args[<span class="number">0</span>])</span><br><span class="line">    <span class="built_in">console</span>.log(args[<span class="number">1</span>])</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">add(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用for of 循环 (for let a of arr1 a即为数组中的元素)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> a <span class="keyword">of</span> arr1) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(a)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 字符串模板 传统的方式像其他语言一样使用+号进行连接 字符串模板运行 使用的符号为`</span></span><br><span class="line"><span class="comment">// 支持html标签 也可以直接获得运算结果</span></span><br><span class="line"><span class="keyword">let</span> str1 = <span class="string">&#x27;aaa&#x27;</span>;</span><br><span class="line"><span class="keyword">let</span> str2 = <span class="string">`非aaabbb<span class="subst">$&#123;str1&#125;</span>,cccc`</span>;</span><br><span class="line"><span class="built_in">console</span>.log(str2);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Json</span></span><br><span class="line"><span class="keyword">let</span> json1 = &#123;</span><br><span class="line">    <span class="string">&#x27;0&#x27;</span>: <span class="string">&#x27;aaa&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;1&#x27;</span>: <span class="string">&#x27;bb&#x27;</span>,</span><br><span class="line">    length: <span class="number">2</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> json = &#123;</span><br><span class="line">    <span class="comment">// 给一个变量名然后使用解构的方式去使用返回的值</span></span><br><span class="line">    a: <span class="string">&#x27;jspang&#x27;</span>,</span><br><span class="line">    b: <span class="string">&#x27;技术胖&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fun</span>(<span class="params">&#123; a, b &#125;</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(a, b);</span><br><span class="line">&#125;</span><br><span class="line">fun(json);</span><br><span class="line"><span class="comment">//可以将获取到的json转换成数组再进行操作 前提是这个数组中必须包含length属性，Array.from(json)</span></span><br><span class="line"><span class="comment">// Array.of() parse to array</span></span><br><span class="line"><span class="keyword">let</span> arr = <span class="built_in">Array</span>.from(json);</span><br><span class="line"><span class="built_in">console</span>.log(arr);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 箭头函数 如果方法体中语句多于一句则仍需要加上大括号</span></span><br><span class="line"><span class="comment">// 箭头函数内不可以使用new 即这种表达方式不可以用作构造函数</span></span><br><span class="line"><span class="keyword">var</span> del = <span class="function">(<span class="params">a, b = <span class="number">1</span></span>) =&gt;</span> a - b</span><br><span class="line"><span class="built_in">console</span>.log(del(<span class="number">3</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> arr3 = [<span class="string">&#x27;jspang&#x27;</span>, <span class="string">&#x27;技术胖&#x27;</span>, <span class="string">&#x27;前端教程&#x27;</span>];</span><br><span class="line"><span class="comment">// 循环替代 将数组中的所有内容均替换成函数中的字符串</span></span><br><span class="line"><span class="built_in">console</span>.log(arr3.map(<span class="function"><span class="params">a</span> =&gt;</span> <span class="string">&#x27;web&#x27;</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// some有循环的功能</span></span><br><span class="line">arr3.some(<span class="function"><span class="params">x</span> =&gt;</span> <span class="built_in">console</span>.log(x))</span><br><span class="line"><span class="comment">// map也有替代的功能</span></span><br><span class="line"><span class="built_in">console</span>.log(arr3.map(<span class="function"><span class="params">x</span> =&gt;</span> <span class="string">&#x27;web&#x27;</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// es6中的对象</span></span><br><span class="line"><span class="comment">//可以把声明好的变量直接赋给对象 如果是使用从后台取出的参数</span></span><br><span class="line"><span class="comment">//作为key值那么声明对象的方式就变为</span></span><br><span class="line"><span class="keyword">let</span> key = <span class="string">&#x27;0&#x27;</span></span><br><span class="line"><span class="keyword">let</span> obj = &#123;</span><br><span class="line">    [key]: <span class="string">&quot;aaa&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> name = <span class="string">&#x27;zhangsan&#x27;</span></span><br><span class="line"><span class="keyword">let</span> age = <span class="number">23</span>;</span><br><span class="line"><span class="keyword">let</span> person = &#123; name, age &#125;</span><br><span class="line"><span class="built_in">console</span>.log(person)</span><br><span class="line"><span class="comment">// set中不允许重复的值</span></span><br><span class="line"><span class="keyword">let</span> setArr = <span class="keyword">new</span> <span class="built_in">Set</span>([<span class="string">&#x27;jspang&#x27;</span>, <span class="string">&#x27;技术胖&#x27;</span>, <span class="string">&#x27;web&#x27;</span>, <span class="string">&#x27;jspang&#x27;</span>]);</span><br><span class="line"><span class="comment">// for (let item of setArr) &#123;</span></span><br><span class="line"><span class="comment">//     console.log(item);</span></span><br><span class="line"><span class="comment">// &#125;</span></span><br><span class="line">setArr.forEach(<span class="function"><span class="params">value</span> =&gt;</span> <span class="built_in">console</span>.log(value));</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(setArr.size);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> json3 = &#123;</span><br><span class="line">    name: <span class="string">&#x27;jspang&#x27;</span>,</span><br><span class="line">    skill: <span class="string">&#x27;web&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(json3.name);</span><br><span class="line"></span><br><span class="line"><span class="comment">//如果使用map 需要先创建Map对象 和set一样</span></span><br><span class="line"><span class="keyword">var</span> map = <span class="keyword">new</span> <span class="built_in">Map</span>();</span><br><span class="line">map.set(name, <span class="string">&#x27;js&#x27;</span>)</span><br><span class="line">map.set(age, <span class="number">22</span>)</span><br><span class="line">map.forEach(<span class="function"><span class="params">value</span> =&gt;</span> <span class="built_in">console</span>.log(value))</span><br><span class="line"></span><br><span class="line"><span class="comment">// 模块化 可以将变量函数对象进行模块化供外部使用</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">var</span> a = <span class="string">&#x27;myjs&#x27;</span> <span class="comment">//此时就可以在另一个文件中使用import &#123;a&#125; from ./src/index.js 的方式使用这个变量</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//当多个变量需要输出的时候 则将这几个变量打包成对象即可</span></span><br><span class="line"><span class="comment">// export &#123;a,b,c&#125; 或者 export &#123; x as a,y as b&#125;这样的形式使用别名 可以export多个 变量函数可以一起 当使用import的时候也是一样 而当使用default修饰的时候就只能有一个并且import的时候可以不加&#123;&#125;</span></span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="http://example.com/2019/11/19/python%E5%9F%BA%E7%A1%80/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -415,7 +354,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2019/11/14/linux%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/10/17/spring%E5%85%A5%E9%97%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -429,7 +368,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2019/11/14/linux%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">linux学习笔记</a>
+            <a href="/2019/10/17/spring%E5%85%A5%E9%97%A8/" class="post-title-link" itemprop="url">spring入门</a>
         </h1>
 
         <div class="post-meta">
@@ -439,14 +378,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2019-11-14 16:30:27" itemprop="dateCreated datePublished" datetime="2019-11-14T16:30:27+08:00">2019-11-14</time>
+              <time title="Created: 2019-10-17 13:16:47" itemprop="dateCreated datePublished" datetime="2019-10-17T13:16:47+08:00">2019-10-17</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2019-11-20 10:22:06" itemprop="dateModified" datetime="2019-11-20T10:22:06+08:00">2019-11-20</time>
+                <time title="Modified: 2019-10-18 14:38:59" itemprop="dateModified" datetime="2019-10-18T14:38:59+08:00">2019-10-18</time>
               </span>
 
           
@@ -460,54 +399,18 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>linux系统映像里以前在南京读书的时候好像没有说过，来了这里半学期的课程，老师上课还是一副不耐烦的样子，挺尴尬的，现在好多技术都是服务器上的，只好再次学起这个系统。这个笔记是看尚硅谷韩顺平老师的视频写的。</p>
-<p>我用的是阿里的服务器，内核为centos。</p>
-<h2 id="linux基础"><a href="#linux基础" class="headerlink" title="linux基础"></a>linux基础</h2><p>Linux的历史和安装过程这里不再多做介绍了,感兴趣的同学可以自己去了解一下。同时它与Windows操作系统的比较也不在多说，视频里介绍的都是表面的不同，对于学过os的同学来说个人觉得没什么意义，让我觉得有意思的是这个吉祥物是个企鹅，如果你有注意到的话可以看见在阿里的控制台上会显示一个小企鹅。下面学习其他内容。</p>
-<h3 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h3><p>层级式的树状结构只有一个根目录，对于Linux来说<code>一切皆为文件,</code>系统中的硬件也会被映射成文件进行管理。</p>
-<img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20191114171209.png" style="zoom:50%;" /> 
+          <h1 id="spring入门"><a href="#spring入门" class="headerlink" title="spring入门"></a>spring入门</h1><h2 id="spring-IOC"><a href="#spring-IOC" class="headerlink" title="spring IOC"></a>spring IOC</h2><h3 id="底层原理"><a href="#底层原理" class="headerlink" title="底层原理"></a>底层原理</h3><p>为什么需要依赖注入，程序之间的紧耦合导致程序无法被扩展，或者在扩展时很不方便，需要修改程序的源代码，不符合开放关闭原则，比如，如果需要在控制层实现业务逻辑，传统的做法是在控制层直接new出service层的对象再调用其中的方法，但是这就导致两个类之间的耦合程度变高，如何解耦呢？因为是需要service层不同的对象，所以可以使用工厂模式来提供不同的实现类，但在这种情况下，控制层又和工厂类紧耦合了，为了进一步解耦，提供的方法是：工厂方法+反射+配置文件。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;user&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.usts.UserServiceImpl&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
 
-<p>可以看到根目录的文件夹及文件。</p>
-<p>/bin存放的内容为常用的命令  /home存放普通用户，每当你在系统中创建一个用户时，目录下就会对应生成这个用户的文件夹。 /root为用户权限的主目录。 /etc配置文件  /usr通常存放应用程序和相关文件。/dev 设备映射文件夹 /media识别u盘光盘等  /mnt通常为共享文件夹。/usr/local 安装软件的目录。</p>
-<h3 id="实际操作"><a href="#实际操作" class="headerlink" title="实际操作"></a>实际操作</h3><p>我使用的连接终端的工具是Termius，感觉还不错，有命令行也可以上传文件，比较方便。</p>
-<h4 id="vi-vim"><a href="#vi-vim" class="headerlink" title="vi vim"></a>vi vim</h4><p>直接搜索vim并安装，在这里上课的时候花过一段时间介绍过，对他的一些基本操作我还有点印象。当我们用vim打开一个文档的时候可以对文档进行浏览，或者使用一些快捷键对文档进行操作。按i进入插入模式，编辑完成后按esc进入命令行模式输入:wq保存并退出 :q直接退出  :q!强制不保存退出。</p>
-<p>常用的快捷键：yy 复制当前行 nyy复制光标小的n行 dd删除当前行 ndd删除光标下的n行 / 查找指定的字符串 :set nu/nonu显示取消行号 G跳到尾行 gg跳到首行 撤销操作u  n+shift+g跳到第n行</p>
-<h3 id="开机，重启注销命令"><a href="#开机，重启注销命令" class="headerlink" title="开机，重启注销命令"></a>开机，重启注销命令</h3><p>shutdown</p>
-<p>shutdown -h now 立即关机</p>
-<p>shutdown -h 1 一分钟后关机</p>
-<p>shutdown  -r now 立即重启</p>
-<p>halt</p>
-<p>关机</p>
-<p>reboot </p>
-<p>重启</p>
-<p>sync</p>
-<p>将内存中的数据同步，关机之前执行。</p>
-<h3 id="用户登录和注销"><a href="#用户登录和注销" class="headerlink" title="用户登录和注销"></a>用户登录和注销</h3><p>尽量不使用root登录，而要使用普通用户再使用命令su切换权限，logout注销当前用户，命令行下生效。</p>
-<h3 id="用户管理"><a href="#用户管理" class="headerlink" title="用户管理"></a>用户管理</h3><p>众所周知，linux为多用户操作系统，对权限的管理十分重要，系统中可以有多个用户，不同的用户归于不同的组，不同的组拥有不同的权限，当用户属于那个组的时候也就拥有了对应的权限，所有的用户都在home目录下。</p>
-<p>useradd 用户名创建用户后，同时也创建了一个同名的组，这个用户在这个组里，同时/home目录下多了一个文件夹。useradd -d /home/<dir> 用户名在指定文件夹下新建一个用户。passwd 用户名 给一个用户指定密码。 userdel 用户名 删除一个用户 userdel -r 用户名删除用户同时删除它的home目录。</p>
-<p>id 用户名 查询用户的信息 如果用户不存在就会返回无此用户。</p>
-<p>切换用户，权限不够的时候使用su命令进行切换。由高权限切换到低权限不需要输入密码，需要切回原来的用户主需要退出当前的用户即可exit。</p>
-<h3 id="用户组"><a href="#用户组" class="headerlink" title="用户组"></a>用户组</h3><p>groupadd 组名 / groupdel 组名  useradd -g 用户组 用户名 创建一个在指定组下的用户 usermod -g 用户组 用户名 修改用户的组</p>
-<h3 id="用户配置文件"><a href="#用户配置文件" class="headerlink" title="用户配置文件"></a>用户配置文件</h3><p>创建的用户在/etc/passwd记录了用户的信息， /etc/group分组 etc/shadow密码</p>
-<h3 id="实用指令"><a href="#实用指令" class="headerlink" title="实用指令"></a>实用指令</h3><p>这里只记录一些我没怎么用过的命令，常用的cd ls等就不再说了，mkdir -p /a/b 一次可以创建多个目录 不带参数只能创建一级,rmdir删除目录 只能删除空目录 如果目录不为空需要使用命令 rm -rf /a, touch [][][文件1] [文件2] 创建空文件可创建多个，cp 拷贝命令 如果需要拷贝一个目录 则使用参数 cp -r 源文件夹 目标文件夹 如果有相同文件时 在cp前加\ 可以全部覆盖，mv 重命名与移动 在同一个目录和不同目录的区别。cat 查看命令 cat -n 文件 | more 分页显示行号查看 more/less查看文件.</p>
-<h3 id="gt-与-gt-gt"><a href="#gt-与-gt-gt" class="headerlink" title="&gt; 与 &gt;&gt;"></a>&gt; 与 &gt;&gt;</h3><p>输出重定向与追加，重定向会覆盖原来的内容而追加不会</p>
-<p> ls -l &gt; a.txt 将命令输出的内容重定向到一个文件中,如果文件不存在就会创建。&gt;&gt; 同理</p>
-<p>find /home -name/user/size a.txt/a.txt/+/-/20M 不同的查找命令</p>
-<p>locate定位，使用之前更新updatedb，因为这个命令基于它自己创建的locate库。</p>
-<p>grep命令，通常与其它命令配合使用，比如 cat a.txt | grep -ni a 意思为把查看的结果交给grep查找a这个字符并显示行号忽略大小写，管道操作符| 将前面指令的结果交给后面处理。</p>
-<h3 id="权限管理"><a href="#权限管理" class="headerlink" title="权限管理"></a>权限管理</h3><p>chown chgrp 改变文件所有者和组</p>
-<p>文件的类型 -普通文件 d目录文件 l软连接 </p>
-<p>rwx三种权限</p>
-<p>r=4,w=2.x=1</p>
-<p>chmod u=rwx,g=rx,o=x</p>
-<p>chmod 751</p>
-<p>chmod u-x,g+w</p>
-<p>作用在文件上表示 对文件有查看 修改 执行权限，想要删除文件需要对文件所在的目录有w权限</p>
-<p>作用在文件夹上表示对文件夹有查看创建删除重命名以及可进入权限</p>
-<p>rw文件所有者的权限 读写</p>
-<p>r– 文件所在组的用户的权限只读</p>
-<p>r– 其他用户的权限</p>
-<h3 id="进程管理"><a href="#进程管理" class="headerlink" title="进程管理"></a>进程管理</h3><h4 id="什么是进程"><a href="#什么是进程" class="headerlink" title="什么是进程"></a>什么是进程</h4><p>进程是程序的一次运行</p>
-<p>查看进程的相关命令为 ps -a -u -x</p>
+<p>此时这个工厂类就是spring工厂，spring容器，我们需要什么类直接先获取这个容器在利用反射机制得到这个类(getBean()),在获取时需要强制类型转换，在操作这个类的对象即可。这就是IOC的底层原理。也就是本来需要手动创建的对象现在交给spring进行管理。需要的对象直接从容器中通过id获取即可。</p>
+<h2 id="DI依赖注入"><a href="#DI依赖注入" class="headerlink" title="DI依赖注入"></a>DI依赖注入</h2><p>将传统方式的set方法设置属性取消，本身也是需要创建对应的实现类对象才可以调用set方法，如果new的是接口对象则没有set方法这样如果类中带有属性，传统的方式就失去了意义，不面向接口就没有扩展性可言。而使用依赖注入则只需要在配置文件中设置它的属性即可，基本数据类型通常使用property标签即可。这样在容器中获取对象是这个属性就已经在这个对象中被设置好了。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;name&quot;</span> <span class="attr">value</span>=<span class="string">&quot;zhangsan&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="spring的工厂类"><a href="#spring的工厂类" class="headerlink" title="spring的工厂类"></a>spring的工厂类</h2><p>实际上就是通过ClassPathXmlApplicationContext（ApplicationContext），与BeanFactory的区别在于，部分功能有扩展以及实例化bean的实际不同，一个是在调用getBean()方法的时候才会获取，一个则是在配置文件被加载的时候就会实例化所有单例的bean。</p>
+<h2 id="bean的管理方式"><a href="#bean的管理方式" class="headerlink" title="bean的管理方式"></a>bean的管理方式</h2><p>1.xml配置文件 2.注解</p>
+<p>实际上可以理解成有什么样的方式去获取一个类的对象，常用的肯定是直接通过无参构造获得对象，当然也可以使用工厂模式去获取对象，</p>
 
       
     </div>
@@ -527,7 +430,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2019/11/04/jwt%E5%88%9D%E6%8E%A2/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/09/03/html%E5%9F%BA%E7%A1%80/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -541,7 +444,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2019/11/04/jwt%E5%88%9D%E6%8E%A2/" class="post-title-link" itemprop="url">jwt初探</a>
+            <a href="/2019/09/03/html%E5%9F%BA%E7%A1%80/" class="post-title-link" itemprop="url">html基础</a>
         </h1>
 
         <div class="post-meta">
@@ -551,14 +454,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2019-11-04 19:05:43" itemprop="dateCreated datePublished" datetime="2019-11-04T19:05:43+08:00">2019-11-04</time>
+              <time title="Created: 2019-09-03 18:53:20" itemprop="dateCreated datePublished" datetime="2019-09-03T18:53:20+08:00">2019-09-03</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2019-11-06 11:23:54" itemprop="dateModified" datetime="2019-11-06T11:23:54+08:00">2019-11-06</time>
+                <time title="Modified: 2019-10-25 17:12:31" itemprop="dateModified" datetime="2019-10-25T17:12:31+08:00">2019-10-25</time>
               </span>
 
           
@@ -572,19 +475,190 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="jwt是什么"><a href="#jwt是什么" class="headerlink" title="jwt是什么"></a>jwt是什么</h1><p>jwt全称Json Web Token。实际使用过程中可能对json也需要有一定的了解。但是在学完xml之后，对比与一系列的标签现在不过是又将他们规范为一些键值对而已。当然使用json的有点有很多，使用的资源少同时也更加容易理解，作为前后端数据交互的格式十分方便。</p>
-<p>其基本结构为Header.Payload.Signature，本身是一个很长的字符串，三部分分别对应头部，负载，签名。头部存储的内容为算法和类型</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;alg&quot;</span>: <span class="string">&quot;HS256&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;typ&quot;</span>: <span class="string">&quot;JWT&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <h1 id="html标签"><a href="#html标签" class="headerlink" title="html标签"></a>html标签</h1><p>慕课网的课程基本介绍的是一些标签，我在课程中已经学过，这里做一个复习，不再进行总结了。值得注意的是，在讲到div的时候这里给了一个笔画的图，感觉像是在作业面之前自己的思考，对页面的布局分块距离等等之间的计算。这是值得学习的地方。值得注意的是html为标记语言，其重要的是语义。</p>
+<p>表格标签也是值得注意的，主要元素有<table><tr><th><td>注意他们之间的关系与用途，<tbody>…</tbody>：如果不加<thead><tbody><tfooter> , table表格加载完后才显示。加上这些表格结构， tbody包含行的内容下载完优先显示，不必等待表格结束后在显示，同时如果表格很长，用tbody分段，可以一部分一部分地显示。（通俗理解table 可以按结构一块块的显示，不在等整个表格加载完后显示。），表格在没有设置样式时时没有边框等的。  <caption>标题</caption>表格的标题可以使用这个标签。</p>
+<blockquote>
+<p> <code>&lt;img src=&quot;图片地址&quot; alt=&quot;下载失败时的替换文本&quot; title = &quot;提示文本&quot;&gt;</code></p>
+</blockquote>
+<p>表单标签 可以说是与后台程序员交互最多的标签了，注意其中的属性。 文本框的name属性是很重要的。</p>
+<p>文本域标签的行与列还可以用css样式的width和height来代替：col用width、row用height来代替。</p>
+<p>选择控件的属性name是后台获取的名字而value则是通过name得到的具体值checked则可以设置是否被选中。注意，单选框的name需要保持一致这样他们才是一个组的也就是才能满足单选的情况。当选项较多的时候可以使用select标签其下的具体选项可以使用<option> 那么标签内的属性value就是传递到后台的值，selected可以保证这个选项被默认选中  <option value="旅游" selected>旅游</option>，<label for="email">for属性中的值对应表单中的type中的值，点击Lable文字后会选中对应的表单元素。</p>
+<p>html是不区分大小写的，但是标签是需要小写的，标签内填写属性值的时候是需要使用双引号的。</p>
+<p>需要注意的是</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;refresh&quot;</span> <span class="attr">content</span>=<span class="string">&quot;3;http://www.baidu.com&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>表示页面在3秒内跳转到指定页面。</p>
+<p>实际上页面的样式整个是由div+css组成的，由div负责布局，css改变样式。还需要注意的一个标签时<dl><dt><dd>嵌套后的标签，通常网页最下方的导航栏是由这些标签组成的。被称为列表，比较重要</p>
+<img src="http://img.smyhvae.com/20170704_1727.png" style="zoom:75%;" />
 
 
 
-<p>负载中存储的内容可以使用官方提供的字段也可以定义私有字段</p>
-<p>签名则是根据前两部分生成的，一旦前两部分的内容被修改，就会失效。</p>
-<p>使用时需要首先指明一个加密的密钥，这个密钥只有服务器知道。经过加密之后将其产生的结果返回给用户。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">HMACSHA256(</span><br><span class="line">  base64UrlEncode(header) + <span class="string">&quot;.&quot;</span> +</span><br><span class="line">  base64UrlEncode(payload),</span><br><span class="line">  secret)</span><br></pre></td></tr></table></figure>
+<p>表格中单元格的合并 rollspan colspan等，注意在合并时需要删除固定数量的单元格才能正确合并。</p>
+<p><code>&lt;fieldset&gt;</code> 标签将表单里的内容进行打包，代表一组；而<code>&lt;legend&gt; </code>标签的则是 fieldset 里的元素定义标题。</p>
+<p>在文本框输入时会在数据列表中查询相关的内容，注意list属性，这样这两个标签就绑定了起来。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">list</span>=<span class="string">&quot;myData&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">datalist</span> <span class="attr">id</span>=<span class="string">&quot;myData&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">option</span>&gt;</span>本科<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">option</span>&gt;</span>研究生<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">option</span>&gt;</span>不明<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">datalist</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<p>用户在登录的时候除了一些必要的信息比如账号密码，还有可能会根据需要添加新的内容，把这些附加的信息单独取出来进行加密并在完成登录后返回给用户，以后用户在请求资源的时候只需要携带这串密文就可以验证是否有权限进行访问。同时它支持跨域访问。</p>
-<h1 id="使用springboot-jwt-springsecurity进行权限验证"><a href="#使用springboot-jwt-springsecurity进行权限验证" class="headerlink" title="使用springboot+jwt+springsecurity进行权限验证"></a>使用springboot+jwt+springsecurity进行权限验证</h1>
+<p>通过pattern属性可以对表单进行正则验证</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span><span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line">        form &#123;</span><br><span class="line">            width: 100%;</span><br><span class="line"><span class="css">            <span class="comment">/* 最大宽度*/</span></span></span><br><span class="line">            max-width: 640px;</span><br><span class="line"><span class="css">            <span class="comment">/* 最小宽度*/</span></span></span><br><span class="line">            min-width: 320px;</span><br><span class="line">            margin: 0 auto;</span><br><span class="line">            font-family: &quot;Microsoft Yahei&quot;;</span><br><span class="line">            font-size: 20px;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        input &#123;</span><br><span class="line">            display: block;</span><br><span class="line">            width: 100%;</span><br><span class="line">            height: 30px;</span><br><span class="line">            margin: 10px 0;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">fieldset</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">legend</span>&gt;</span>表单属性<span class="tag">&lt;/<span class="name">legend</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">&quot;&quot;</span>&gt;</span></span><br><span class="line">            用户名：<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">placeholder</span>=<span class="string">&quot;例如：smyhvae&quot;</span> <span class="attr">autofocus</span> <span class="attr">name</span>=<span class="string">&quot;userName&quot;</span> <span class="attr">autocomplete</span>=<span class="string">&quot;on&quot;</span> <span class="attr">required</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">&quot;&quot;</span>&gt;</span></span><br><span class="line">            电话：<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;tel&quot;</span> <span class="attr">pattern</span>=<span class="string">&quot;1\d&#123;10&#125;&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">&quot;&quot;</span>&gt;</span></span><br><span class="line">            multiple的表单: <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;file&quot;</span> <span class="attr">multiple</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 上传文件--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;file&quot;</span> <span class="attr">name</span>=<span class="string">&quot;file&quot;</span> <span class="attr">multiple</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">fieldset</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="CSS样式"><a href="#CSS样式" class="headerlink" title="CSS样式"></a>CSS样式</h1><h2 id="选择器样式"><a href="#选择器样式" class="headerlink" title="选择器样式"></a>选择器样式</h2><p>直接以标签命名也即标签选择器，在style标签下直接写 </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;style type=&quot;text/css&quot;&gt;</span><br><span class="line"><span class="selector-tag">p</span>&#123;</span><br><span class="line">   <span class="attribute">font-size</span>:<span class="number">12px</span>;</span><br><span class="line">   <span class="attribute">color</span>:red;</span><br><span class="line">   <span class="attribute">font-weight</span>:bold;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>如果此时在文本上在对p标签进行设置那么被设置的那个标签将会改变其余的依然是按照统一的形式，多个样式之间应该用分号来分割。</p>
+<p>这种设置css的方式是写在html文件中的，需要写在head&gt;style下。还有一种方式是单独将样式写成一个文件。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">href</span>=<span class="string">&quot;style.css&quot;</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">type</span>=<span class="string">&quot;text/css&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>如果问一个标签同时设置了内联，内部，外部样式那么他们的优先级关系是内联式 &gt; 嵌入式 &gt; 外部式。当且仅当嵌入式的样式在外部式后面。也就是就近原则，谁离得近就显示谁的样式。</p>
+<h2 id="类选择器"><a href="#类选择器" class="headerlink" title="类选择器"></a>类选择器</h2><p>语法 <span class="stress">  .stress{color:red;}</p>
+<h2 id="ID选择器"><a href="#ID选择器" class="headerlink" title="ID选择器"></a>ID选择器</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">id</span>=<span class="string">&quot;setGreen&quot;</span>&gt;</span>公开课<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-id">#setGreen</span>&#123;</span><br><span class="line">   <span class="attribute">color</span>:green;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>类选择器可以使用多个而ID选择器不可以<span class="stress bigsize">  <del>~ <span id="stressid bigsizeid"> ~</del></p>
+<h2 id="子选择器"><a href="#子选择器" class="headerlink" title="子选择器"></a>子选择器</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.food</span>&gt;<span class="selector-tag">li</span>&#123;<span class="attribute">border</span>:<span class="number">1px</span> solid red;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>指定这个class修饰的下的li标签。这里是跟在这个class后的第一后代标签，而使用空格则会作用于后面的所有同名标签</p>
+<p>​                                                            空格<img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20190904213523.png"></p>
+<p>​                                                             &gt;</p>
+<p><img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20190904213623.png"></p>
+<p>伪类选择器，直接为标签的某个属性添加样式如悬浮点击等属性a:hover</p>
+<blockquote>
+<p>当你想为多个标签设置同一种属性时，可以用逗号将这些标签分隔开</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">h1</span>,<span class="selector-tag">span</span>&#123;<span class="attribute">color</span>:red;&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h1 id="字体"><a href="#字体" class="headerlink" title="字体"></a>字体</h1><p>可以为字体设置不同的样式诸如颜色，字体，重量等等，最主要的还是熟悉这些属性。font-size font-color font-family font-style</p>
+<p>对文字的其他样式的设置text-decoration 为文字添加下划线删除线等样式line-through under-line</p>
+<p>对于段落文本样式的设置缩进text-indent:2em; 行距line-height:2em;字符间距letter-spacing:20px;单词间距word-spacing:50px;</p>
+<p>但当给 font-size 设置单位为 em 时，此时计算的标准以 p 的父元素的 font-size 为基础</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>以这个<span class="tag">&lt;<span class="name">span</span>&gt;</span>例子<span class="tag">&lt;/<span class="name">span</span>&gt;</span>为例。<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">p</span>&#123;<span class="attribute">font-size</span>:<span class="number">14px</span>&#125;</span><br><span class="line"><span class="selector-tag">span</span>&#123;<span class="attribute">font-size</span>:<span class="number">0.8em</span>;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>结果 span 中的字体“例子”字体大小就为 11.2px（14 * 0.8 = 11.2px）</p>
+<h1 id="元素分类"><a href="#元素分类" class="headerlink" title="元素分类"></a>元素分类</h1><h2 id="常见的块状元素"><a href="#常见的块状元素" class="headerlink" title="常见的块状元素"></a>常见的块状元素</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span>、<span class="tag">&lt;<span class="name">p</span>&gt;</span>、<span class="tag">&lt;<span class="name">h1</span>&gt;</span>...<span class="tag">&lt;<span class="name">h6</span>&gt;</span>、<span class="tag">&lt;<span class="name">ol</span>&gt;</span>、<span class="tag">&lt;<span class="name">ul</span>&gt;</span>、<span class="tag">&lt;<span class="name">dl</span>&gt;</span>、<span class="tag">&lt;<span class="name">table</span>&gt;</span>、<span class="tag">&lt;<span class="name">address</span>&gt;</span>、<span class="tag">&lt;<span class="name">blockquote</span>&gt;</span> 、<span class="tag">&lt;<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="常见的内联元素"><a href="#常见的内联元素" class="headerlink" title="常见的内联元素"></a>常见的内联元素</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span>&gt;</span>、<span class="tag">&lt;<span class="name">span</span>&gt;</span>、<span class="tag">&lt;<span class="name">br</span>&gt;</span>、<span class="tag">&lt;<span class="name">i</span>&gt;</span>、<span class="tag">&lt;<span class="name">em</span>&gt;</span>、<span class="tag">&lt;<span class="name">strong</span>&gt;</span>、<span class="tag">&lt;<span class="name">label</span>&gt;</span>、<span class="tag">&lt;<span class="name">q</span>&gt;</span>、<span class="tag">&lt;<span class="name">var</span>&gt;</span>、<span class="tag">&lt;<span class="name">cite</span>&gt;</span>、<span class="tag">&lt;<span class="name">code</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>可以为元素设置属性为</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">display</span><span class="selector-pseudo">:block</span>;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">display</span><span class="selector-pseudo">:inline</span>;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">display</span><span class="selector-pseudo">:inline-block</span>;</span><br></pre></td></tr></table></figure>
+
+<p>将一个内联元素设置称为一个块状元素。元素独占一行且可以单独设置它的宽高边距等属性，如果不进行设置则会与父容器一致。</p>
+<p>而把块元素的属性设置成为inline时就会成为内联元素，内联元素的特点就是元素都在一行并且不可以设置宽高边距等属性。</p>
+<p>也可以设置称为inline-block这样一个元素就具有了内联元素和块状元素的特点，即显示在一行并且可以设置宽高间距等属性。</p>
+<h1 id="盒模型"><a href="#盒模型" class="headerlink" title="盒模型"></a>盒模型</h1><blockquote>
+<p>块级元素具备盒模型的特点</p>
+</blockquote>
+<p>border-style（边框样式）常见样式有：</p>
+<p>dashed（虚线）| dotted（点线）| solid（实线）。</p>
+<p>显然边框这个属性是有特点的，首先是宽度其次是实虚线，然后是颜色。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">div</span>&#123;</span><br><span class="line">    <span class="attribute">border</span>:<span class="number">2px</span>  solid  red;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">div</span>&#123;</span><br><span class="line">    <span class="attribute">border-width</span>:<span class="number">2px</span>;</span><br><span class="line">    <span class="attribute">border-style</span>:solid;</span><br><span class="line">    <span class="attribute">border-color</span>:red;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>padding内边距 margin外边界距离 设置距离的顺序为顺时针上右下左</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">div</span>&#123; <span class="attribute">margin</span>:<span class="number">10px</span> <span class="number">20px</span>;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当这样设置时，就表示设置了上下与左右的距离。</p>
+<h1 id="布局"><a href="#布局" class="headerlink" title="布局"></a>布局</h1><h2 id="流动模型float"><a href="#流动模型float" class="headerlink" title="流动模型float"></a>流动模型float</h2><p><strong>块状元素</strong>都会在所处的<strong>包含元素内</strong>自上而下按顺序垂直延伸分布，因为在默认状态下，块状元素的宽度都为<strong>100%**。也就是在不设置宽度的情况下，宽度都占满父元素。实际上，块状元素都会以行的形式占据位置。这种样式是默认的布局模式。</strong>内联元素**都会在所处的包含元素内从左到右水平分布显示。</p>
+<p>如果需要块状元素在一行内显示只需要为它们设置左右浮动就可以。</p>
+<h2 id="层模型-position"><a href="#层模型-position" class="headerlink" title="层模型 position"></a>层模型 position</h2><h3 id="绝对定位"><a href="#绝对定位" class="headerlink" title="绝对定位"></a>绝对定位</h3><p>如果想为元素设置层模型中的绝对定位,需要设置<strong>position:absolute</strong>(表示绝对定位)，这条语句的作用将元素从文档流中拖出来，然后使用left、right、top、bottom属性相对于其最接近的一个具有定位属性的父包含块进行绝对定位。如果不存在这样的包含块，则相对于body元素，即相对于<strong>浏览器窗口</strong>。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">div</span>&#123;</span><br><span class="line">    <span class="attribute">width</span>:<span class="number">200px</span>;</span><br><span class="line">    <span class="attribute">height</span>:<span class="number">200px</span>;</span><br><span class="line">		<span class="attribute">border</span>:<span class="number">2px</span> red solid;</span><br><span class="line">		<span class="attribute">position</span>:absolute;</span><br><span class="line">    <span class="attribute">right</span>:<span class="number">100px</span>;</span><br><span class="line">    <span class="attribute">top</span>:<span class="number">20px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="相对定位"><a href="#相对定位" class="headerlink" title="相对定位"></a>相对定位</h3><p>如果想为元素设置层模型中的相对定位，需要设置position:relative（表示相对定位），它通过left、right、top、bottom属性确定元素在<strong>正常文档流中</strong>的偏移位置。相对定位完成的过程是首先按static(float)方式生成一个元素(并且元素像层一样浮动了起来)，然后相对于<strong>以前的位置移动，</strong>移动的方向和幅度由left、right、top、bottom属性确定，偏移前的位置保留不动。</p>
+<p>div块本身应该是在左上角的，设置相对定位的时候会依照原本的位置来定位。</p>
+<h3 id="固定定位"><a href="#固定定位" class="headerlink" title="固定定位"></a>固定定位</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-id">#div1</span>&#123;</span><br><span class="line">    <span class="attribute">width</span>:<span class="number">200px</span>;</span><br><span class="line">    <span class="attribute">height</span>:<span class="number">200px</span>;</span><br><span class="line">    <span class="attribute">border</span>:<span class="number">2px</span> red solid;</span><br><span class="line">    <span class="attribute">position</span>:fixed;</span><br><span class="line">    <span class="attribute">left</span>:<span class="number">100px</span>;</span><br><span class="line">    <span class="attribute">top</span>:<span class="number">50px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个div块会一直在这个位置，滚动条等被拖动时它仍然在这个地方。</p>
+<h2 id="Relative与Absolute组合使用"><a href="#Relative与Absolute组合使用" class="headerlink" title="Relative与Absolute组合使用"></a>Relative与Absolute组合使用</h2><p>绝对定位在没有设置的情况下是相对Body元素的，当绝对定位于相对定位配合使用的时候才可以让绝对定位基于其他元素进行定位。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;box1&quot;</span>&gt;</span><span class="comment">&lt;!--参照定位的元素--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;box2&quot;</span>&gt;</span>相对参照元素进行定位<span class="tag">&lt;/<span class="name">div</span>&gt;</span><span class="comment">&lt;!--相对定位元素--&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-id">#box1</span>&#123;</span><br><span class="line">    <span class="attribute">width</span>:<span class="number">200px</span>;</span><br><span class="line">    <span class="attribute">height</span>:<span class="number">200px</span>;</span><br><span class="line">    <span class="attribute">position</span>:relative;        </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-id">#box2</span>&#123;</span><br><span class="line">    <span class="attribute">position</span>:absolute;</span><br><span class="line">    <span class="attribute">top</span>:<span class="number">20px</span>;</span><br><span class="line">    <span class="attribute">left</span>:<span class="number">30px</span>;         </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>父布局设置为相对子布局设置为绝对这样才可以进行想要的定位。</p>
+<h1 id="水平居中设置"><a href="#水平居中设置" class="headerlink" title="水平居中设置"></a>水平居中设置</h1><p>行内元素进行居中设置的时候只需要设置属性text-align:center即可.:call_me_hand: 但是块状元素就需要分两种情况。</p>
+<p>定宽块状：块状元素的width被设置为固定值，满足<strong>定宽</strong>和<strong>块状</strong>两个条件的元素是可以通过设置“左右margin”值为“auto”来实现居中的，这两个条件缺一不可。</p>
+<p>不定宽块状：在实际开发中更为常见 可以将其设置为行内元素inline或者在外部包装一个table tr td标签。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/08/26/ssm%E6%95%B4%E5%90%88%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="GuAn">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CodePig">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/08/26/ssm%E6%95%B4%E5%90%88%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/" class="post-title-link" itemprop="url">ssm整合配置文件</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2019-08-26 16:39:59 / Modified: 18:53:34" itemprop="dateCreated datePublished" datetime="2019-08-26T16:39:59+08:00">2019-08-26</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="ssm框架配置文件整合"><a href="#ssm框架配置文件整合" class="headerlink" title="ssm框架配置文件整合"></a>ssm框架配置文件整合</h1><p>在公司的这一小段时间里接触了两个项目一个是ssm框架的一个是springboot，毫无疑问Boot项目是十分便捷的。但是呢基于现在还会使用等多方面原因还是把这些ssm的xml文件给记录下来方便日后直接copy。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/08/26/ssm%E6%95%B4%E5%90%88%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -603,7 +677,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -669,14 +743,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-count">12</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
