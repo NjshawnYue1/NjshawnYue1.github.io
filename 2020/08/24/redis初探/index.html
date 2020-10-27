@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="CodePig" />
+
+
+
+<meta name="description" content="文中所写time value key通常对应为命令的参数  ##Redis  redis是单线程的 基于内存操作的 cpu不是性能瓶颈,是单线程操作的，不需要切换cpu上下文  一些基础命令 keys * 查询当前数据库中的所有键   dbsize 查询当前库的大小 有几个键就会返回几  flushdb flushall 清空当前数据库，清空所有数据  select db  切换数据库  set">
+<meta property="og:type" content="article">
+<meta property="og:title" content="redis初探">
+<meta property="og:url" content="http://example.com/2020/08/24/redis%E5%88%9D%E6%8E%A2/index.html">
+<meta property="og:site_name" content="CodePig">
+<meta property="og:description" content="文中所写time value key通常对应为命令的参数  ##Redis  redis是单线程的 基于内存操作的 cpu不是性能瓶颈,是单线程操作的，不需要切换cpu上下文  一些基础命令 keys * 查询当前数据库中的所有键   dbsize 查询当前库的大小 有几个键就会返回几  flushdb flushall 清空当前数据库，清空所有数据  select db  切换数据库  set">
+<meta property="og:locale">
+<meta property="og:image" content="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200904162935.png">
+<meta property="og:image" content="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200904163702.png">
+<meta property="og:image" content="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200904163931.png">
+<meta property="og:image" content="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200904164753.png">
+<meta property="og:image" content="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200909104610.png?Expires=1600513918&OSSAccessKeyId=TMP.3KdYGR9vdSCVePsyE6CoQ9MgEcL4sejaJctstQin3u3FsRN1JTZuDfyp6ij34vCymmRYV3gmUrftmxZZFHCudB7ak36Z2e&Signature=fPOGIgih8vDGV0bf6JIgXXK1oSI%3D">
+<meta property="og:image" content="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200912112229.png?Expires=1600514102&OSSAccessKeyId=TMP.3KdYGR9vdSCVePsyE6CoQ9MgEcL4sejaJctstQin3u3FsRN1JTZuDfyp6ij34vCymmRYV3gmUrftmxZZFHCudB7ak36Z2e&Signature=4YnKENR925wSURr1C2Vd1Riqu6s%3D">
+<meta property="og:image" content="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200912113018.png?Expires=1600514123&OSSAccessKeyId=TMP.3KdYGR9vdSCVePsyE6CoQ9MgEcL4sejaJctstQin3u3FsRN1JTZuDfyp6ij34vCymmRYV3gmUrftmxZZFHCudB7ak36Z2e&Signature=L4zUD54Oh9jEf10ayhdhDcwP%2BZ8%3D">
+<meta property="og:image" content="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200912113248.png?Expires=1600514150&OSSAccessKeyId=TMP.3KdYGR9vdSCVePsyE6CoQ9MgEcL4sejaJctstQin3u3FsRN1JTZuDfyp6ij34vCymmRYV3gmUrftmxZZFHCudB7ak36Z2e&Signature=gz3gLLSOR2Qfuvu36z7EZk7TTek%3D">
+<meta property="og:image" content="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200912120031.png?Expires=1600514211&OSSAccessKeyId=TMP.3KdYGR9vdSCVePsyE6CoQ9MgEcL4sejaJctstQin3u3FsRN1JTZuDfyp6ij34vCymmRYV3gmUrftmxZZFHCudB7ak36Z2e&Signature=0XeifTOpMhCAZI8syL6X6KIiGgk%3D">
+<meta property="og:image" content="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200916160526.png?Expires=1600514225&OSSAccessKeyId=TMP.3KdYGR9vdSCVePsyE6CoQ9MgEcL4sejaJctstQin3u3FsRN1JTZuDfyp6ij34vCymmRYV3gmUrftmxZZFHCudB7ak36Z2e&Signature=OMfMSsk1I0nqpM%2F6a7IWeMEMqXo%3D">
+<meta property="og:image" content="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200916175851.png?Expires=1600514293&OSSAccessKeyId=TMP.3Kg9xgYXJksWZbxpifx6DiQUrSS3Qn74rupoFwGPaLw4bnFEesw8LFkwj4mDqNW9DABZQEWS3pGbfnGSkGqWK5ekDxW4Tp&Signature=eWVTe8Wz7cuQQgnvPCDh2QQwU%2B8%3D">
+<meta property="og:image" content="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200916180832.png?Expires=1600514306&OSSAccessKeyId=TMP.3KdYGR9vdSCVePsyE6CoQ9MgEcL4sejaJctstQin3u3FsRN1JTZuDfyp6ij34vCymmRYV3gmUrftmxZZFHCudB7ak36Z2e&Signature=CABs5sbR%2B1UK9vi3g%2BVSFM3t3ZA%3D">
+<meta property="og:image" content="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200916211121.png?Expires=1600514322&OSSAccessKeyId=TMP.3KdYGR9vdSCVePsyE6CoQ9MgEcL4sejaJctstQin3u3FsRN1JTZuDfyp6ij34vCymmRYV3gmUrftmxZZFHCudB7ak36Z2e&Signature=GtNcEIeiK9emfxU3fBbMOZ%2FW1z0%3D">
+<meta property="og:image" content="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200916212136.png?Expires=1600514334&OSSAccessKeyId=TMP.3KdYGR9vdSCVePsyE6CoQ9MgEcL4sejaJctstQin3u3FsRN1JTZuDfyp6ij34vCymmRYV3gmUrftmxZZFHCudB7ak36Z2e&Signature=V%2Fahy259hf4v4VE6FV8z0CL7uv8%3D">
+<meta property="og:image" content="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200916214527.png?Expires=1600514347&OSSAccessKeyId=TMP.3KdYGR9vdSCVePsyE6CoQ9MgEcL4sejaJctstQin3u3FsRN1JTZuDfyp6ij34vCymmRYV3gmUrftmxZZFHCudB7ak36Z2e&Signature=rDyRCnLkt3BjLAJRMk1XhBvNC9Y%3D">
+<meta property="og:image" content="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200918140445.png?Expires=1600514360&OSSAccessKeyId=TMP.3KdYGR9vdSCVePsyE6CoQ9MgEcL4sejaJctstQin3u3FsRN1JTZuDfyp6ij34vCymmRYV3gmUrftmxZZFHCudB7ak36Z2e&Signature=8bVpg5J13KW%2FPNBJnAZPuk0qTpI%3D">
+<meta property="og:image" content="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200918141826.png?Expires=1600514369&OSSAccessKeyId=TMP.3KdYGR9vdSCVePsyE6CoQ9MgEcL4sejaJctstQin3u3FsRN1JTZuDfyp6ij34vCymmRYV3gmUrftmxZZFHCudB7ak36Z2e&Signature=eGgfLsNLH3WYzNyOFzjhv%2FiqisM%3D">
+<meta property="article:published_time" content="2020-08-24T14:35:25.000Z">
+<meta property="article:modified_time" content="2020-09-19T11:14:35.724Z">
+<meta property="article:author" content="CodePig">
+<meta property="article:tag" content="redis  缓存">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200904162935.png">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="CodePig" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>redis初探 | CodePig</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/"></a></h1>
+        </hgroup>
+
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript-%E8%AF%AD%E6%B3%95-%E5%A4%8D%E4%B9%A0/" rel="tag">JavaScript 语法 复习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/html%E5%9F%BA%E7%A1%80/" rel="tag">html基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jquery-%E5%9F%BA%E7%A1%80/" rel="tag">jquery 基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql-%E5%9F%BA%E7%A1%80/" rel="tag">mysql 基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-%E5%85%A5%E9%97%A8-%E5%9F%BA%E7%A1%80/" rel="tag">python 入门 基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis-%E7%BC%93%E5%AD%98/" rel="tag">redis  缓存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-java-%E5%9F%BA%E7%A1%80/" rel="tag">spring java 基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-security/" rel="tag">spring security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot%E5%85%A5%E9%97%A8-%E5%9F%BA%E7%A1%80/" rel="tag">springboot入门 基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring%E5%85%A8%E5%AE%B6%E6%A1%B6-SpringCloud/" rel="tag">spring全家桶 SpringCloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ssm-xml%E9%85%8D%E7%BD%AE-%E6%95%B4%E5%90%88/" rel="tag">ssm xml配置 整合</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">专注于前端</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页"></a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页"></a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-redis初探" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/08/24/redis%E5%88%9D%E6%8E%A2/" class="article-date">
+      <time datetime="2020-08-24T14:35:25.000Z" itemprop="datePublished">2020-08-24</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      redis初探
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis-%E7%BC%93%E5%AD%98/" rel="tag">redis  缓存</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <blockquote>
+<p>文中所写time value key通常对应为命令的参数</p>
+</blockquote>
+<p>##Redis</p>
+<blockquote>
+<p>redis是单线程的 基于内存操作的 cpu不是性能瓶颈,是单线程操作的，不需要切换cpu上下文</p>
+</blockquote>
+<h3 id="一些基础命令"><a href="#一些基础命令" class="headerlink" title="一些基础命令"></a>一些基础命令</h3><ul>
+<li><p>keys * 查询当前数据库中的所有键 </p>
+</li>
+<li><p>dbsize 查询当前库的大小 有几个键就会返回几</p>
+</li>
+<li><p>flushdb flushall 清空当前数据库，清空所有数据</p>
+</li>
+<li><p>select db  切换数据库</p>
+</li>
+<li><p>set key value 设置值</p>
+</li>
+<li><p>get key 获取值</p>
+</li>
+<li><p>exists key 是否存在这个键 返回1或0</p>
+</li>
+<li><p><em>expire key 10(s)</em> 设置过期时间</p>
+</li>
+<li><p>ttl key 查看当前键的剩余时间 </p>
+</li>
+<li><p>type key 查看当前键的类型</p>
+</li>
+</ul>
+<a id="more"></a>
+
+<h3 id="基本类型"><a href="#基本类型" class="headerlink" title="基本类型"></a>基本类型</h3><h4 id="String"><a href="#String" class="headerlink" title="String"></a>String</h4><p>存储为字符串类型，可以使用append命令追加内容，如</p>
+<img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200904162935.png" style="zoom:50%;" />
+
+<p>如果key不存在就相当于set，strlen key 获得字符串的长度</p>
+<p>对于数字类型的值想要单次改变其数字比如浏览量，订阅量等数据，可以使用incr key/decr key/incrby/decrby key 10(一次增加/减少10个)</p>
+<img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200904163702.png" style="zoom:50%;" />
+
+<p>如果是一串字符串想要获取其中的一部分 getrange key start end</p>
+<img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200904163931.png" style="zoom:50%;" />
+
+
+
+<p>setrange key offset value 从开始位置修改 value有多长就修改多长</p>
+<img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200904164753.png" style="zoom:50%;" />
+
+<p>setex key time value 设置key的值为value并在time秒之后过期</p>
+<img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200909104610.png?Expires=1600513918&OSSAccessKeyId=TMP.3KdYGR9vdSCVePsyE6CoQ9MgEcL4sejaJctstQin3u3FsRN1JTZuDfyp6ij34vCymmRYV3gmUrftmxZZFHCudB7ak36Z2e&Signature=fPOGIgih8vDGV0bf6JIgXXK1oSI%3D" style="zoom:50%;" />
+
+<p>setnx key value 如果key不存在则设置，常用在分布式锁中，如果这个key存在则不能设置。</p>
+<p>mset,mget可以一次性设置多个值或者获取多个值，在设置对象时可以使用的方式为set user:1 {name:zhangsan,age:2}这个1可以对应一个唯一的值比如他的id</p>
+<h4 id="List"><a href="#List" class="headerlink" title="List"></a>List</h4><ul>
+<li><p>lpush key value</p>
+</li>
+<li><p>lpop key 弹出顶部的元素</p>
+</li>
+<li><p>rpop key 弹出底部元素</p>
+</li>
+<li><p>lindex key index 通过下标获取值</p>
+</li>
+<li><p>llen key 返回列表的长度</p>
+</li>
+<li><p>lrem key num value 精确匹配 移除列表中指定个数num的value的值</p>
+</li>
+<li><p>lrange key start end 获取List的内容</p>
+</li>
+<li><p>rpoplpush key otherkey 顾名思义</p>
+</li>
+<li><p>lset key index value 替换掉原列表中指定下标的值</p>
+</li>
+<li><p>linsert key before/after value other 在列表中的指定元素之前插入一个元素</p>
+</li>
+</ul>
+<h4 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h4><blockquote>
+<p>不存在重复的值</p>
+</blockquote>
+<ul>
+<li>sadd key value 向set中添加值</li>
+<li>smembers key 查看set中的元素</li>
+<li>sismember key value 查看set中是否存在这个值</li>
+<li>scard key 获取set元素个数</li>
+<li>srem key value 移除指定元素</li>
+<li>srandmember key num 随机获取集合中的值 num不写就是一个</li>
+<li>spop key 随机删除集合中的一个元素</li>
+<li>smove key1 key2 value 将key1中指定的值移动到key2</li>
+<li>sdiff key1 key2 获得两个集合的差集</li>
+<li>sinter key1 key2 获得交集 (场景:共同关注)</li>
+<li>sunion key1 key2 获得并集</li>
+</ul>
+<h4 id="Hash"><a href="#Hash" class="headerlink" title="Hash"></a>Hash</h4><blockquote>
+<p>key-map形式,key存放的值是一个键值对</p>
+</blockquote>
+<ul>
+<li>hset key field value</li>
+<li>hget key field</li>
+</ul>
+<img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200912112229.png?Expires=1600514102&OSSAccessKeyId=TMP.3KdYGR9vdSCVePsyE6CoQ9MgEcL4sejaJctstQin3u3FsRN1JTZuDfyp6ij34vCymmRYV3gmUrftmxZZFHCudB7ak36Z2e&Signature=4YnKENR925wSURr1C2Vd1Riqu6s%3D" style="zoom:50%;" />
+
+<p>可以看到是field中存放了多个值。</p>
+<ul>
+<li>hmset key field1 value1 field2 value2…    设置多个值</li>
+<li>hmget key field1 field2… 同时获取多个值</li>
+<li>hgetall key 获取这个hash中所有的内容</li>
+</ul>
+<img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200912113018.png?Expires=1600514123&OSSAccessKeyId=TMP.3KdYGR9vdSCVePsyE6CoQ9MgEcL4sejaJctstQin3u3FsRN1JTZuDfyp6ij34vCymmRYV3gmUrftmxZZFHCudB7ak36Z2e&Signature=L4zUD54Oh9jEf10ayhdhDcwP%2BZ8%3D" style="zoom:50%;" />
+
+<ul>
+<li>hdel key field 删除指定的值</li>
+<li>hlen key 获取长度 </li>
+</ul>
+<img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200912113248.png?Expires=1600514150&OSSAccessKeyId=TMP.3KdYGR9vdSCVePsyE6CoQ9MgEcL4sejaJctstQin3u3FsRN1JTZuDfyp6ij34vCymmRYV3gmUrftmxZZFHCudB7ak36Z2e&Signature=gz3gLLSOR2Qfuvu36z7EZk7TTek%3D" style="zoom:50%;" />
+
+<ul>
+<li>hexists key field 判断是否存在</li>
+<li>hkeys key 获取所有field</li>
+<li>hvals key 获取所有value</li>
+</ul>
+<p>可以参考字符串中的命令，类似</p>
+<hr>
+<p>其他的几个集合先放着吧</p>
+<h3 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h3><p>事务的ACID 原子一致隔离持久。</p>
+<p>例如：</p>
+<blockquote>
+<p>—– 队列 set set set 执行 —–</p>
+</blockquote>
+<p>这样一个事务中，多个命令进入这个队列，知道发生执行命令时(Exec)才会一次运行。</p>
+<p>事务，一组指令的集合，一个事务在执行时会按照顺序一次性执行完，但在redis中事务没有隔离级别的概念,也不保证原子性。</p>
+<p>multi 开启事务 </p>
+<p>… 事务的命令</p>
+<p>exec 执行事务</p>
+<img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200912120031.png?Expires=1600514211&OSSAccessKeyId=TMP.3KdYGR9vdSCVePsyE6CoQ9MgEcL4sejaJctstQin3u3FsRN1JTZuDfyp6ij34vCymmRYV3gmUrftmxZZFHCudB7ak36Z2e&Signature=0XeifTOpMhCAZI8syL6X6KIiGgk%3D" style="zoom:50%;" />
+
+<p>在事务队列中使用discard命令可以取消事务，之前的命令也不会被执行。在一次事务中如果因为命令的使用发生了错误(使用了不存在的命令)则整个事务都不会执行，而如果是发生了运行时异常，那么这个事务会执行其他正确的命令，所以说redis事务不具备原子性。</p>
+<img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200916160526.png?Expires=1600514225&OSSAccessKeyId=TMP.3KdYGR9vdSCVePsyE6CoQ9MgEcL4sejaJctstQin3u3FsRN1JTZuDfyp6ij34vCymmRYV3gmUrftmxZZFHCudB7ak36Z2e&Signature=OMfMSsk1I0nqpM%2F6a7IWeMEMqXo%3D" style="zoom:50%;" />
+
+<p>事务完成了，但是错误的语句没有被执行，事务不具有原子性，如果是命令错了，则直接不会执行事务。</p>
+<h3 id="监控"><a href="#监控" class="headerlink" title="监控"></a>监控</h3><p>悲观锁：无论做什么都会加锁，什么时候都会出问题</p>
+<p>乐观锁：认为不会出现问题，不会上锁，在更新数据时会判断数据是否被修改过</p>
+<p>事务正常执行，单线程情况下。而在多个线程同时操作这个数据的时候，使用watch监控这个值，如果另一个线程修改了这个值，在执行事务的时候就不能执行成功。</p>
+<p>使用unwatch解锁后再重新监控，事务就可以正确执行。</p>
+<h3 id="Jedis"><a href="#Jedis" class="headerlink" title="Jedis"></a>Jedis</h3><blockquote>
+<p>java连接redis的中间件</p>
+</blockquote>
+<p>使用Jedis时相对应的方法就是上面的命令。导入依赖后直接使用对象进行操作即可。</p>
+<p>###整合SpringBoot</p>
+<p>同样的导入依赖，在yml文件中进行配置，注入模板即可。</p>
+<p>在使用时需要注意序列化的问题，一个是pojo必须序列化，一个是需要重写默认的序列化实现。</p>
+<img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200916175851.png?Expires=1600514293&OSSAccessKeyId=TMP.3Kg9xgYXJksWZbxpifx6DiQUrSS3Qn74rupoFwGPaLw4bnFEesw8LFkwj4mDqNW9DABZQEWS3pGbfnGSkGqWK5ekDxW4Tp&Signature=eWVTe8Wz7cuQQgnvPCDh2QQwU%2B8%3D" style="zoom:50%;" />
+
+<p>默认使用的序列化方式可能不是所需要的，需要重新定义一个配置类。如果直接传递一个java对象到redis中会报错提示没有进行序列化。</p>
+<img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200916180832.png?Expires=1600514306&OSSAccessKeyId=TMP.3KdYGR9vdSCVePsyE6CoQ9MgEcL4sejaJctstQin3u3FsRN1JTZuDfyp6ij34vCymmRYV3gmUrftmxZZFHCudB7ak36Z2e&Signature=CABs5sbR%2B1UK9vi3g%2BVSFM3t3ZA%3D" style="zoom:50%;" />
+
+<p>查看源码可以看到这个模板使用的注解 </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ConditionalOnMissingBean(</span></span><br><span class="line"><span class="meta">        name = &#123;&quot;redisTemplate&quot;&#125;</span></span><br><span class="line"><span class="meta">    )</span></span><br></pre></td></tr></table></figure>
+
+<p>当你没有自己实现的时候会使用默认的实现方式而当你重写了一个名为redisTemplate的Bean时,就会读取用户所实现的那个类。</p>
+<img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200916211121.png?Expires=1600514322&OSSAccessKeyId=TMP.3KdYGR9vdSCVePsyE6CoQ9MgEcL4sejaJctstQin3u3FsRN1JTZuDfyp6ij34vCymmRYV3gmUrftmxZZFHCudB7ak36Z2e&Signature=GtNcEIeiK9emfxU3fBbMOZ%2FW1z0%3D" style="zoom:50%;" />
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.usts.bootredis.config;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.connection.RedisConnectionFactory;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.core.RedisTemplate;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.net.UnknownHostException;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> GuAn</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@version</span> 1.0</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@ClassName</span> RedisConfig.java</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span> TODO</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@createTime</span> 2020年09月16日 18:00:00</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RedisConfig</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> RedisTemplate&lt;String, Object&gt; <span class="title">redisTemplate</span><span class="params">(RedisConnectionFactory redisConnectionFactory)</span> <span class="keyword">throws</span> UnknownHostException </span>&#123;</span><br><span class="line">        RedisTemplate&lt;String, Object&gt; template = <span class="keyword">new</span> RedisTemplate();</span><br><span class="line">        <span class="comment">// 自定义序列化方式</span></span><br><span class="line"></span><br><span class="line">        Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = <span class="keyword">new</span> Jackson2JsonRedisSerializer(Object.class);</span><br><span class="line">        template.setDefaultSerializer(jackson2JsonRedisSerializer);</span><br><span class="line">        template.setConnectionFactory(redisConnectionFactory);</span><br><span class="line">        <span class="keyword">return</span> template;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Redis-conf"><a href="#Redis-conf" class="headerlink" title="Redis.conf"></a>Redis.conf</h3><h3 id="Redis持久化"><a href="#Redis持久化" class="headerlink" title="Redis持久化"></a>Redis持久化</h3><h3 id="Redis发布订阅"><a href="#Redis发布订阅" class="headerlink" title="Redis发布订阅"></a>Redis发布订阅</h3><p>订阅：subscirbe channel… 订阅一个内容</p>
+<p>发布: publish channel message 发布内容</p>
+<img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200916212136.png?Expires=1600514334&OSSAccessKeyId=TMP.3KdYGR9vdSCVePsyE6CoQ9MgEcL4sejaJctstQin3u3FsRN1JTZuDfyp6ij34vCymmRYV3gmUrftmxZZFHCudB7ak36Z2e&Signature=V%2Fahy259hf4v4VE6FV8z0CL7uv8%3D" style="zoom:50%;" />
+
+<h3 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h3><p>主库复制写从库负责读，读写分离，通常为1+3模式</p>
+<p>使用info replication查看当前redis的信息</p>
+<img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200916214527.png?Expires=1600514347&OSSAccessKeyId=TMP.3KdYGR9vdSCVePsyE6CoQ9MgEcL4sejaJctstQin3u3FsRN1JTZuDfyp6ij34vCymmRYV3gmUrftmxZZFHCudB7ak36Z2e&Signature=rDyRCnLkt3BjLAJRMk1XhBvNC9Y%3D" style="zoom:50%;" />
+
+<p>需要做的事情是修改配置文件，在该文件夹下复制多个redis,conf 可以自定义命名。修改port,pidfile,log,dump.rdb</p>
+<p>开启多个服务后，只要配置从属就可以了。命令时 slaveof address port。 为这个命令提供一个主机的地址和端口即可。</p>
+<p>通过修改配置文件的方式实现永久，在redis.conf中找到replication的配置不需要其他配置，读写在配置之后就确定了。主机断开连接也可以读到数据，而从机断开后不能读到主机新写入的数据。</p>
+<p>全量复制：连接后就会复制全部内容 完成一次同步</p>
+<p>增量复制：有新写入的数据会被复制到从机中。</p>
+<p>主从的挂载方式可以为：</p>
+<img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200918140445.png?Expires=1600514360&OSSAccessKeyId=TMP.3KdYGR9vdSCVePsyE6CoQ9MgEcL4sejaJctstQin3u3FsRN1JTZuDfyp6ij34vCymmRYV3gmUrftmxZZFHCudB7ak36Z2e&Signature=8bVpg5J13KW%2FPNBJnAZPuk0qTpI%3D" style="zoom:50%;" />
+
+<p>可以使用slaveof no one让自己变成主机。</p>
+<h4 id="哨兵模式"><a href="#哨兵模式" class="headerlink" title="哨兵模式"></a>哨兵模式</h4><img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20200918141826.png?Expires=1600514369&OSSAccessKeyId=TMP.3KdYGR9vdSCVePsyE6CoQ9MgEcL4sejaJctstQin3u3FsRN1JTZuDfyp6ij34vCymmRYV3gmUrftmxZZFHCudB7ak36Z2e&Signature=eGgfLsNLH3WYzNyOFzjhv%2FiqisM%3D" style="zoom:50%;" />
+
+<p>多个哨兵之间互相监视，同时每个哨兵监视主机就可以发现所有机器，向主机发送信号如果一段时间内没有回应则认为主机<code>主观下线</code>,同时其他哨兵也发现主机没有响应则会采用投票的方式确定新的主机。若果是多个哨兵则需要多个配置文件在配置文件中再配置一个端口即可</p>
+<p>配置sentinel.cof文件</p>
+<p>settinel monitor myredis 127.0.0.1 6379 1 1表示投票</p>
+<p>启动方式为redis-sentinel kconfig/sentinel.conf</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2020/08/24/redis%E5%88%9D%E6%8E%A2/">redis初探</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页"></a></p>
+        <p><span>发布时间:</span>2020-08-24, 22:35:25</p>
+        <p><span>最后更新:</span>2020-09-19, 19:14:35</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2020/08/24/redis%E5%88%9D%E6%8E%A2/" title="redis初探">http://example.com/2020/08/24/redis%E5%88%9D%E6%8E%A2/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://example.com/2020/08/24/redis%E5%88%9D%E6%8E%A2/　　作者: " title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2020/09/19/springboot%E5%85%A5%E9%97%A8/">
+                    springboot入门
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2020/03/24/js%E5%9F%BA%E7%A1%80/">
+                    js基础
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4"><span class="toc-number">1.</span> <span class="toc-text">一些基础命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B"><span class="toc-number">2.</span> <span class="toc-text">基本类型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#String"><span class="toc-number">2.1.</span> <span class="toc-text">String</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#List"><span class="toc-number">2.2.</span> <span class="toc-text">List</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Set"><span class="toc-number">2.3.</span> <span class="toc-text">Set</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Hash"><span class="toc-number">2.4.</span> <span class="toc-text">Hash</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8B%E5%8A%A1"><span class="toc-number">3.</span> <span class="toc-text">事务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%91%E6%8E%A7"><span class="toc-number">4.</span> <span class="toc-text">监控</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Jedis"><span class="toc-number">5.</span> <span class="toc-text">Jedis</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Redis-conf"><span class="toc-number">6.</span> <span class="toc-text">Redis.conf</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Redis%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-number">7.</span> <span class="toc-text">Redis持久化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Redis%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85"><span class="toc-number">8.</span> <span class="toc-text">Redis发布订阅</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6"><span class="toc-number">9.</span> <span class="toc-text">主从复制</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%93%A8%E5%85%B5%E6%A8%A1%E5%BC%8F"><span class="toc-number">9.1.</span> <span class="toc-text">哨兵模式</span></a></li></ol></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"redis初探　| CodePig　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2020/09/19/springboot%E5%85%A5%E9%97%A8/" title="上一篇: springboot入门">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2020/03/24/js%E5%9F%BA%E7%A1%80/" title="下一篇: js基础">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2020/10/17/spring-security%E5%9F%BA%E7%A1%80/">spring security基础</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/09/21/SpringCloud%E5%9F%BA%E7%A1%80/">SpringCloud基础</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/09/19/springboot%E5%85%A5%E9%97%A8/">springboot入门</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/08/24/redis%E5%88%9D%E6%8E%A2/">redis初探</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/03/24/js%E5%9F%BA%E7%A1%80/">js基础</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/02/05/jquery%E5%9F%BA%E7%A1%80/">jquery基础</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/11/19/python%E5%9F%BA%E7%A1%80/">python基础</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/10/17/spring%E5%85%A5%E9%97%A8/">spring入门</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/09/03/html%E5%9F%BA%E7%A1%80/">html基础</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/08/26/ssm%E6%95%B4%E5%90%88%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/">ssm整合配置文件</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/08/21/mysql%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86/">mysql知识点整理</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/08/18/jsp+servlet%E7%9A%84%E4%B8%80%E4%BA%9B%E6%95%B4%E7%90%86/">jsp+servlet的一些整理</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2020 CodePig
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
