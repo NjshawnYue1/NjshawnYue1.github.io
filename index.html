@@ -163,7 +163,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/10/29/java8%E5%AE%9E%E6%88%98/" class="post-title-link" itemprop="url">Untitled</a>
+            <a href="/2020/10/29/java8%E5%AE%9E%E6%88%98/" class="post-title-link" itemprop="url">java8实战</a>
         </h1>
 
         <div class="post-meta">
@@ -174,7 +174,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2020-10-29 10:45:53 / Modified: 11:42:09" itemprop="dateCreated datePublished" datetime="2020-10-29T10:45:53+08:00">2020-10-29</time>
+              <time title="Created: 2020-10-29 12:02:52 / Modified: 12:03:21" itemprop="dateCreated datePublished" datetime="2020-10-29T12:02:52+08:00">2020-10-29</time>
             </span>
 
           
@@ -188,50 +188,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>title: java8实战<br>comments: true<br>date: 2020-10-29 10:45:53<br>tags:<br>categories:<br>description: 学习mrbird.cc的博客笔记，做一些记录总结等</p>
-<p><a target="_blank" rel="noopener" href="https://mrbird.cc/java8stream1.html">原文链接</a></p>
-<h3 id="流操作"><a href="#流操作" class="headerlink" title="流操作"></a>流操作</h3><p>这种所谓的流操作，实际中只使用过foreach，其他的一些过滤操作没有使用过，看下大概是怎么用的。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; list = Arrays.asList(<span class="string">&quot;Java&quot;</span>, <span class="string">&quot;JavaScript&quot;</span>, <span class="string">&quot;python&quot;</span>, <span class="string">&quot;PHP&quot;</span>, <span class="string">&quot;C#&quot;</span>, <span class="string">&quot;Golang&quot;</span>, <span class="string">&quot;Swift&quot;</span>, <span class="string">&quot;C++&quot;</span>, <span class="string">&quot;Ruby&quot;</span>);</span><br></pre></td></tr></table></figure>
-
-<ol>
-<li>filter</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 用于对集合进行筛选，返回所有满足的元素</span></span><br><span class="line">list.stream()</span><br><span class="line">    .filter(s -&gt; s.contains(<span class="string">&quot;#&quot;</span>))</span><br><span class="line">    .forEach(System.out::println);</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>distinct</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 对结果进行去重操作</span></span><br><span class="line">List&lt;Integer&gt; numbers = Arrays.asList(<span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">4</span>);</span><br><span class="line">numbers.stream()</span><br><span class="line">       .filter(i -&gt; i % <span class="number">2</span> == <span class="number">0</span>)</span><br><span class="line">       .distinct()</span><br><span class="line">       .forEach(System.out::println);</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>map</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//map方法接收一个[函数]作为参数。这个函数会被应用到每个元素上，并将其映射成一个新的元素。</span></span><br><span class="line">list.stream()</span><br><span class="line">    .map(String::length)</span><br><span class="line">    .forEach(System.out::println);</span><br><span class="line"></span><br><span class="line">list.stream()</span><br><span class="line">  <span class="comment">// 这里返回了一个流对象 需要再整合 把返回的流合到操作的流上</span></span><br><span class="line">    .map(s -&gt; s.split(<span class="string">&quot;&quot;</span>))</span><br><span class="line">    .flatMap(Arrays::stream)</span><br><span class="line">    .distinct()</span><br><span class="line">    .forEach(s -&gt; System.out.print(s + <span class="string">&quot; &quot;</span>));</span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li>anyMatch</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// anyMatch方法用于判断流中是否有符合判断条件的元素</span></span><br><span class="line">list.stream()</span><br><span class="line">    .anyMatch(s -&gt; <span class="string">&quot;SQL&quot;</span>.equals(s)); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
-
-<ol start="5">
-<li>allMatch</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// allMatch方法用于判断流中是否所有元素都满足给定的判断条件</span></span><br><span class="line">list.stream()</span><br><span class="line">    .allMatch(s -&gt; s.length() &lt;= <span class="number">10</span>); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-
-<p>这两个感觉应该挺好用的可惜只能判断不能筛选有点可惜。</p>
-<ol start="6">
-<li>collect</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//collect方法用于收集流中的元素，并放到不同类型的结果中 List,Map,Set</span></span><br><span class="line">List&lt;String&gt; filterList = list.stream()</span><br><span class="line">        .filter(s -&gt; s.startsWith(<span class="string">&quot;J&quot;</span>)).collect(Collectors.toList());</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="使用Optional取代null"><a href="#使用Optional取代null" class="headerlink" title="使用Optional取代null"></a>使用Optional取代null</h3><p>在工作中，经常会担心自己的代码以问题，虽然还没出发现但这不是一个👨‍💻‍应该做的。如何优雅的判断null呢？</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> String <span class="title">getGirlFriendName</span><span class="params">(Department department)</span> </span>&#123;</span><br><span class="line">    Optional&lt;Department&gt; opt = Optional.ofNullable(department);</span><br><span class="line">    <span class="keyword">return</span> opt.map(Department::getEmployee)</span><br><span class="line">            .map(Employee::getGirlFriend)</span><br><span class="line">            .map(Girl::getName)</span><br><span class="line">            .orElseThrow(NoSuchElementException::<span class="keyword">new</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
+          <p>学习mrbird.cc的博客笔记，做一些记录总结等</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/10/29/java8%E5%AE%9E%E6%88%98/">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
