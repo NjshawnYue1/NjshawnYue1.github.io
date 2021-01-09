@@ -20,17 +20,21 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.7.1","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="about">
-<meta property="og:url" content="http://example.com/about/index.html">
+  <meta name="description" content="ngnix基础，简单看下配置和概念">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nginx入门">
+<meta property="og:url" content="http://example.com/2021/01/09/nginx%E5%85%A5%E9%97%A8/index.html">
 <meta property="og:site_name" content="CodePig">
+<meta property="og:description" content="ngnix基础，简单看下配置和概念">
 <meta property="og:locale">
-<meta property="article:published_time" content="2020-10-28T02:47:14.000Z">
-<meta property="article:modified_time" content="2020-10-28T02:47:14.998Z">
+<meta property="og:image" content="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20210109181927.png">
+<meta property="article:published_time" content="2021-01-09T06:55:12.000Z">
+<meta property="article:modified_time" content="2021-01-09T11:24:09.211Z">
 <meta property="article:author" content="CodePig">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20210109181927.png">
 
-<link rel="canonical" href="http://example.com/about/">
+<link rel="canonical" href="http://example.com/2021/01/09/nginx%E5%85%A5%E9%97%A8/">
 
 
 <script id="page-configurations">
@@ -38,12 +42,11 @@
   CONFIG.page = {
     sidebar: "",
     isHome: false,
-    isPost: false
+    isPost: true
   };
 </script>
 
-  <title>about | CodePig
-  </title>
+  <title>nginx入门 | CodePig</title>
   
 
 
@@ -143,44 +146,113 @@
       <div class="main-inner">
         <div class="content-wrap">
           
-  
-  
 
           <div class="content">
             
 
   <div class="posts-expand">
-    
-    
-    
-    <div class="post-block" lang="zh-Hans">
-      <header class="post-header">
-
-<h1 class="post-title" itemprop="name headline">about
-</h1>
-
-<div class="post-meta">
+      
   
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/01/09/nginx%E5%85%A5%E9%97%A8/">
 
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="CodePig">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CodePig">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          nginx入门
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-01-09 14:55:12 / Modified: 19:24:09" itemprop="dateCreated datePublished" datetime="2021-01-09T14:55:12+08:00">2021-01-09</time>
+            </span>
+
+          
+            <div class="post-description">ngnix基础，简单看下配置和概念</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>技术太多，越学越纠结，感觉这就是看视频和博客学习的后果，对于很多名词想了解的很清楚，但看来看去才发现，说的都是一些皮毛，有的时候不知道是自己太强还是关注的东西都是骗人的，感觉看到的博客内容是在太基础了，基础到看来看去都是这些内容。不知不觉间已然陷入了巨大的误区之中，一味追求一些技术名词的实际含义没法去真的掌握一些实际有用的东西，不知道自己什么时候才能走出来。</p>
+</blockquote>
+<p>简单看下Nginx，因为不是搞运维的，也算是给自己找了一个借口，暂时就这么说吧。</p>
+<h2 id="代理"><a href="#代理" class="headerlink" title="代理"></a>代理</h2><p>感觉这个词有点不和谐，在基本介绍里，代理分为正向代理和反向代理两种。所谓正向代理，即把你的请求通过代理服务器转发到目标目标服务器上，感觉我这种描述是在描述反向代理一样。简单的理解称为，正向代理是代理了客户端的请求，需要你在客户端进行相对应的代理配置从而进行访问。而反向代理则不需要，对客户端来说你只需要访问服务器的url即可，至于其将你的请求转发到了何处你是无感知也不需要关心的。此时的nginx+实际的web服务器(tomcat)成为了一个整体，有点黑盒的感觉。</p>
+<h2 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h2><p>在之前看cloud的时候也说过，基本来说就是为了防止高并发下服务的不可用，讲道理这高并发估计大部分公司都不会遇到。当然了现在的保护措施很多，熔断限流降级都可以，而且负载均衡需要多服务器一般情况下小公司怕是没那么多资源。在服务器被大量请求同时访问的时候，有Nginx均衡代理到多台服务器上从而缓解服务器的压力。</p>
+<h2 id="动静分离"><a href="#动静分离" class="headerlink" title="动静分离"></a>动静分离</h2><p>将静态组员与后台代码分开部署，没什么好说的。</p>
+<h2 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h2><p>下面进行实际操作，首先是安装，需要一些依赖诸如 gcc openssl pcre等直接使用yum依次下载即可，然后直接解压后make &amp;&amp; make install安装成功后再/usr/local/nginx下可以找到他。然后看下相关配置nginx.conf这文件夹里有一个备份的文件应该没什么问题。下面一步开启防火墙的操作比较重要，虽然在Linux启动了虚拟机依照ip进行访问，但会发现压根访问不了这个节点，当然我事先没有开启默认端口，如果你的机器之前已经进行过配置那应该没有问题。</p>
+<p>1.firewall-cmd –list-all 看下已经开启的端口。</p>
+<img src='https://njguan.oss-cn-shanghai.aliyuncs.com/img/20210109181927.png'>
+
+<p>2.开启端口命令 firewall-cmd –add-port=端口号/tcp –permanent</p>
+<p>3.重启防火墙 firewall-cmd –reload</p>
+<p>所有命令需进入nginx/sbin目录下操作</p>
+<p>1.关闭 ./nginx -s stop</p>
+<p>2.启动 ./nginx</p>
+<p>3.重新加载配置文件 ./nginx -s reload</p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    Donate
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/WechatPay.jpeg" alt="CodePig WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+
+  </div>
 </div>
 
-</header>
 
-      
-      
-      
-      <div class="post-body">
-          
-      </div>
-      
-      
-      
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/11/15/jvm%E5%9F%BA%E7%A1%80/" rel="prev" title="jvm基础">
+      <i class="fa fa-chevron-left"></i> jvm基础
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
+      </footer>
     
+  </article>
+  
+  
+  
 
-    
-    
-    
   </div>
 
 
@@ -232,6 +304,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">代理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1"><span class="nav-number">2.</span> <span class="nav-text">负载均衡</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E9%9D%99%E5%88%86%E7%A6%BB"><span class="nav-number">3.</span> <span class="nav-text">动静分离</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C"><span class="nav-number">4.</span> <span class="nav-text">操作</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
