@@ -28,8 +28,13 @@
 <meta property="og:description" content="ngnix基础，简单看下配置和概念">
 <meta property="og:locale">
 <meta property="og:image" content="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20210109181927.png">
+<meta property="og:image" content="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20210110144423.png">
+<meta property="og:image" content="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20210110145009.png">
+<meta property="og:image" content="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20210110152130.png">
+<meta property="og:image" content="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20210110160905.png">
+<meta property="og:image" content="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20210110161030.png">
 <meta property="article:published_time" content="2021-01-09T06:55:12.000Z">
-<meta property="article:modified_time" content="2021-01-09T11:24:09.211Z">
+<meta property="article:modified_time" content="2021-01-10T08:22:29.194Z">
 <meta property="article:author" content="CodePig">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20210109181927.png">
@@ -177,10 +182,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2021-01-09 14:55:12 / Modified: 19:24:09" itemprop="dateCreated datePublished" datetime="2021-01-09T14:55:12+08:00">2021-01-09</time>
+              <time title="Created: 2021-01-09 14:55:12" itemprop="dateCreated datePublished" datetime="2021-01-09T14:55:12+08:00">2021-01-09</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-01-10 16:22:29" itemprop="dateModified" datetime="2021-01-10T16:22:29+08:00">2021-01-10</time>
+              </span>
 
           
             <div class="post-description">ngnix基础，简单看下配置和概念</div>
@@ -211,6 +222,25 @@
 <p>1.关闭 ./nginx -s stop</p>
 <p>2.启动 ./nginx</p>
 <p>3.重新加载配置文件 ./nginx -s reload</p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="反向代理"><a href="#反向代理" class="headerlink" title="反向代理"></a>反向代理</h3><p>首先找到配置文件 conf/nginx/conf目录先的nginx.conf。分为三个部分，全局块 events块及http块，http里还有一个server子块。主要配置的是http块。其他两个暂时不看了，了解了下用来配置并发数进程数就好了。</p>
+<p>首先实现访问ip直接代理到tomcat上及由80端口直接代理到8080端口。需要配置的地方，第一个server下的server_name，默认是localhost，视频上让改成虚拟机ip我试了下都可以，因为都是内网或者本机环境感觉影响应该不打，如果有问题再修改。第二个就是location这个配置块应该蛮重要的，通过正则来匹配路由对后续的转发应该有实际意义。目前呢先添加一个配置内容proxy_pass <a href="http://127.0.0.1:8080l;这个分号很关键不能不加，基本上的意思就是访问了ip给你找发到本机也就是Localhost的8080上去。实际效果如图所示。">http://127.0.0.1:8080l;这个分号很关键不能不加，基本上的意思就是访问了ip给你找发到本机也就是Localhost的8080上去。实际效果如图所示。</a></p>
+<img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20210110144423.png" alt="sty" style="zoom:50%;" />
+
+<p>下面看下路由匹配怎么配的，其实正则表达式蛮难的。</p>
+<p>如果想要ngnix监听多个端口怎么办呢，这里的操作很神奇啊，直接多加一个server配置块就可以，也就是说在一个http下可以有多个server。然后将location匹配的url改下，这边改的还是很简单的只需要使用 ~ /ga/ 就可以匹配到已/ga结尾的内容了那如果是同一个端口下的多个路径呢，只需要配置多个location就可以了，十分方便。</p>
+<img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20210110145009.png" alt="s" style="zoom:80%;" />
+
+<p>同样的，虚拟机上监听的端口和被代理的端口都需要打开。</p>
+<h3 id="负载均衡-1"><a href="#负载均衡-1" class="headerlink" title="负载均衡"></a>负载均衡</h3><p>在http块下加一个upstream块</p>
+<p>默认的模式是轮询，就是几个地址来回切换。如果配置的服务挂了，它就自动将其剔除了。估计是发送什么信号收不到响应就认为它挂了吧。除了轮询意外还可以设置权重，就是在地址后面设置weigth属性，值大就多，还有一种方式是ip_hash的方式就是在第一行加上这个ip_hash就可以，这样就可以保证同一个ip一直访问一个服务器就可以处理session的问题</p>
+<p><img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20210110152130.png"></p>
+<p>然后在location里配置下 我写的那行被我注释掉了，我不测试了。</p>
+<p>![image-20210110152146503](/Users/shawnyue/Library/Application Support/typora-user-images/image-20210110152146503.png)</p>
+<h3 id="动静分离-1"><a href="#动静分离-1" class="headerlink" title="动静分离"></a>动静分离</h3><p>配置location，这里因为配置了root，在url访问www时就会到root底下去找，而下面的autoindex on;则可以在页面上列出所有的文件。确实挺好用的不知道实际项目里怎么配置。</p>
+<img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20210110160905.png" alt="s" style="zoom:150%;" />
+
+<p><img src="https://njguan.oss-cn-shanghai.aliyuncs.com/img/20210110161030.png"></p>
+<p>后续的高可用无非就是多个nginx前面再架一个可能是一个虚拟的地址，暂时也不先去了解了。总体看下来比较简单，不知道实际会用到多少用到什么程度。</p>
 
     </div>
 
@@ -304,7 +334,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">代理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1"><span class="nav-number">2.</span> <span class="nav-text">负载均衡</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E9%9D%99%E5%88%86%E7%A6%BB"><span class="nav-number">3.</span> <span class="nav-text">动静分离</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C"><span class="nav-number">4.</span> <span class="nav-text">操作</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">代理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1"><span class="nav-number">2.</span> <span class="nav-text">负载均衡</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E9%9D%99%E5%88%86%E7%A6%BB"><span class="nav-number">3.</span> <span class="nav-text">动静分离</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C"><span class="nav-number">4.</span> <span class="nav-text">操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE"><span class="nav-number">5.</span> <span class="nav-text">配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86"><span class="nav-number">5.1.</span> <span class="nav-text">反向代理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1-1"><span class="nav-number">5.2.</span> <span class="nav-text">负载均衡</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E9%9D%99%E5%88%86%E7%A6%BB-1"><span class="nav-number">5.3.</span> <span class="nav-text">动静分离</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
